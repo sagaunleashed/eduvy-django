@@ -1,0 +1,611 @@
+{% extends 'base.html' %} 
+{% block content %}
+<script type="text/javascript" src="http://eduvyerp.co.in/eduvy/assets/multiselect/dist/js/bootstrap-multiselect.js"></script>
+
+<link rel="stylesheet" href="http://eduvyerp.co.in/eduvy/assets/multiselect/dist/css/bootstrap-multiselect.css" type="text/css">
+
+
+
+<div class="page-inner">
+    <div class="page-title mb-15">
+        <div class="pull-left">
+            <h3 class="breadcrumb-header">Courses</h3>
+            <p class="text-muted mb-0">Courses under Institutions</p>
+        </div>
+        <div class="pull-right">
+            <div class="btn-group mx-auto">
+                <ol class="breadcrumb hide-phone pt-4 pb-4 m-0">
+                    <li class="breadcrumb-item"><a href="#">Eduvy</a></li>
+                    <li class="breadcrumb-item"><a href="#">Institutions</a></li>
+                    <li class="breadcrumb-item active">Courses</li>
+                </ol>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel mb-0">
+                    <div class="panel-body">
+                        <h4 class="mt-0 header-title"></h4>
+                        <!--<p class="text-muted mb-30 font-15">Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient monte.</p>-->
+                        <div class="row data-filter" style="padding-top:50px;">
+                            <div class="col-md-1">
+                            </div>
+                            <form method="post" action="search_course" class="search_course">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input type="search" id="searchput" name="search" placeholder="Search..." class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <button name="searchbutt" id="searchbut" class="btn btn-warning form-control">Search</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <button name="addnew" class="btn btn-success form-control btn-add">Add <b
+                                            class="fa fa-plus"></b></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <table class="table table-striped table-responsive data-list">
+                                <thead>
+                                    <tr>
+                                        
+                                        <th>Course Name</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for c in course %}
+                                    <tr>
+                                     
+                                        <td>{{c.CourseName}}</td>
+                                      
+                                        <td>
+                                            <span style="cursor:pointer;font-size:1em;" class="fa fa-pencil edit-column" id="{{c.id}}"></span>
+
+                                            <span style="cursor:pointer;margin-left:15px;color:red;font-size:1em;" class="fa fa-trash delete-column" id="{{c.id}}">
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    {% if course.paginator.num_pages > 1 %} {% if course.has_previous %}
+                                    <li>
+                                        <a href="?page={{course.previous_page_number }}">
+                                            << Prev</a>
+                                    </li>
+                                    {% endif %} {% for pg in course.paginator.page_range%} {% if posts.number == pg %}
+                                    <li class="active" style="font-weight: 700;"><a href="?page={{ pg }}">{{pg}}</a>
+                                    </li>
+                                    {% else %}
+                                    <li><a href="?page={{ pg }}">{{pg}}</a></li>
+                                    {% endif %} {% endfor %} {% if course.has_next %}
+                                    <li>
+                                        <a href="?page={{course.next_page_number }}">Next >></a>
+                                    </li>
+                                    {% endif %} {% endif %}
+                                </ul>
+                            </nav>
+                            <style>
+                                .course_code {
+                                    position: relative;
+                                    width: 100%;
+                                }
+                                input#course_code {
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    width: 100%;
+                                    z-index: 10;
+                                }
+                                .validation-message{
+                                    padding:10px;
+                                    font-weight:600;
+                                    color:green;
+                                    display:none;
+                                    position: absolute;
+                                    top: 0;
+                                    right: 0;
+                                    z-index: 11;
+                                }
+                                .fa.fa-check {
+                                    position: relative;
+                                }
+                                .fa.fa-cross {
+                                    position: relative;
+                                }
+                                #course_code_msg .tooltiptext {
+                                    visibility: hidden;
+                                    width: 120px;
+                                    background-color: black;
+                                    color: #fff;
+                                    text-align: center;
+                                    border-radius: 6px;
+                                    padding: 5px 0;
+                        
+                                    /* Position the tooltip */
+                                    position: absolute;
+                                    z-index: 100;
+                                }
+                                #course_code_msg i:hover .tooltiptext {
+                                    visibility: visible;
+                                }
+                                #course_code{
+                                    text-transform:uppercase;
+                                }
+                                #course_name{
+                                    
+                                    text-transform:capitalize;
+                                }
+                                
+                                .course_name {
+                                    position: relative;
+                                    width: 100%;
+                                }
+                                input#course_name {
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    width: 100%;
+                                    z-index: 10;
+                                }
+                                #course_name_msg .tooltiptext {
+                                    visibility: hidden;
+                                    width: 120px;
+                                    background-color: black;
+                                    color: #fff;
+                                    text-align: center;
+                                    border-radius: 6px;
+                                    padding: 5px 0;
+
+                                    /* Position the tooltip */
+                                    position: absolute;
+                                    z-index: 100;
+                                }
+                                #course_name_msg i:hover .tooltiptext {
+                                    visibility: visible;
+                                }
+                                #course_name{
+                                    text-transform:uppercase;
+                                }
+                                #course_name{
+                                    
+                                    text-transform:capitalize;
+                                }
+
+
+                            </style>
+                            <div class="row data-add" style="padding-top:50px;display:none">
+                                <form method="post" enctype="multipart/form-data" action="course">
+                                    <div class="col-lg-12">
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Branch</label>
+                                                <select class="form-control" name="branch_id">
+                                                    {% for bran in branch%}
+                                                    <option value="{{bran.id}}">{{bran.BranchName}}</option>
+                                                    {% endfor %}
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Course Code</label>
+                                                <div class="course_code">
+                                                    <input type="text" class="form-control" name="course_code" id="course_code" placeholder="Course Code" required="" style="text-transform:uppercase;">
+                                                    <p class="validation-message" id="course_code_msg"></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Course Name</label>
+                                                <div class="course_name">
+                                                    <input type="text" class="form-control" name="course_name" id="course_name" placeholder="Course Name" required="" style="text-transform:uppercase;">
+                                                    <p class="validation-message" id="course_name_msg"></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Course Duration (Year)</label>
+                                                <input type="number" class="form-control" min="1" name="duration" placeholder="Course Duration" required="">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Description</label>
+                                                <input type="text" class="form-control" name="description" placeholder="Description" required="">
+                                            </div>
+                                        </div>
+                                        <style>
+                                            strong {
+                                                position: relative !important;
+                                                top: 5px !important;
+                                            }
+                                            
+                                            .btn-group>.btn:first-child {
+                                                width: 100% !important;
+                                            }
+                                            
+                                            .btn-group {
+                                                width: 100% !important;
+                                            }
+                                            
+                                            td {
+                                                vertical-align: inherit !important;
+                                            }
+                                            
+                                            .eduvy-img-listview {
+                                                max-width: 70px;
+                                                max-height: 70px;
+                                            }
+                                            
+                                            .dropdown-menu {
+                                                width: 100% !important;
+                                                max-height: 200px !important;
+                                                overflow-y: scroll !important;
+                                                overflow-x: hidden !important;
+                                            }
+                                            
+                                            .page-item {
+                                                margin-left: 15px !important;
+                                            }
+                                        </style>
+                                        <style>
+                                            .multiselect-native-select .btn-group {
+                                                width: 100% !important;
+                                            }
+                                            
+                                            .multiselect-native-select .btn-group button {
+                                                width: 100% !important;
+                                            }
+                                        </style>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <strong>Supporting Documents:</strong>
+                                                <select name="documents[]" id="multiple-checkboxes" multiple="multiple">
+                                                    {% for i in sup %}
+                                                    <option value="{{i.id}}">{{i.DocumentName}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Course Type:</label>
+                                                <select class="form-control" name="course_type">
+                                                {% for i in ct %}
+                                                    <option value="{{i.id}}">{{i.name}}</option>
+                                                {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Image</label>
+                                                <input type="file" class="form-control" name="course_image" required="">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Status</label>
+                                                <select class="form-control" name="status">
+                                                    <option value="Active">Active</option>
+                                                    <option value="Inactive">Inactive</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12" style="padding-top:50px;">
+                                        <div class="col-lg-6 text-right"><button class="btn btn-success">Submit</button>
+                                        </div>
+                                        <div class="col-lg-6 text-left"><button type="button" class="btn btn-danger btn-close">Close</button></div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="row data-update" style="padding-top:50px;display:none">
+                                <form method="post" enctype="multipart/form-data" action="update_course">
+                                    <div class="col-lg-12">
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Branch</label>
+                                                <select class="form-control branch_id" name="branch_id">
+                                                    {% for b in branch %}
+                                                    <option value="{{b.id}}">{{b.BranchName}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Course Code</label>
+                                                <input type="text" class="form-control course_code" name="course_code" placeholder="Course Code" required="">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Course Name</label>
+                                                <input type="text" class="form-control course_name" name="course_name" placeholder="Course Name" required="">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Course Duration (Year)</label>
+                                                <input type="number" class="form-control duration" min="1" name="duration" placeholder="Course Duration" required="">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Description</label>
+                                                <input type="text" class="form-control description" name="description" placeholder="Description" required="">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group documents_list">
+                                                <strong>Supporting Documents:</strong>
+                                                <select name="documents[]" id="multiple-checkboxes-update" multiple="multiple">
+                                                    {% for i in sup %}
+                                                    <option value="{{i.id}}">{{i.DocumentName}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Course Type:</label>
+                                                <select class="form-control course_type" name="course_type">
+                                                {% for i in ct %}
+                                                    <option value="{{i.id}}">{{i.name}}</option>
+                                                {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Image</label>
+                                                <input type="file" class="form-control" name="course_image">
+                                                <input type="text" name="id" class="course_id" hidden="" style="display:none">
+                                                <input type="text" name="image_path" class="image_path" hidden="" style="display:none">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Status</label>
+                                                <select class="form-control status" name="status">
+                                                    <option value="Active">Active</option>
+                                                    <option value="Inactive">Inactive</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12" style="padding-top:50px;">
+                                        <div class="col-lg-6 text-right"><button class="btn btn-success">Submit</button>
+                                        </div>
+                                        <div class="col-lg-6 text-left"><button type="button" class="btn btn-danger btn-close">Close</button></div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-footer">
+        <!--<p>&copy; 2019 Fadmin - Crafted with <i class="mdi mdi-heart text-danger"></i> by ThemesBoss.</p>-->
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+
+        $(".btn-add").click(function() {
+
+            $(".data-list").hide();
+            $(".data-filter").hide();
+            $(".data-add").show();
+            $(".header-title").html("Add Course");
+
+        });
+
+        $(".btn-close").click(function() {
+
+            $(".data-list").show();
+            $(".data-filter").show();
+            $(".data-add").hide();
+            $(".data-update").hide();
+            $(".header-title").html("");
+
+        });
+        $(".delete-column").click(function() {
+            var id = $(this).attr("id");
+            console.log(id);
+
+            if (confirm("Are you sure ? You want to delete this ?")) {
+                $.ajax({
+                    type: 'POST',
+                    url: 'delete_course',
+                    data: {
+                        id: id
+                    },
+                    success: function(html) {
+                        if (html == true) {
+                            window.location.reload();
+                        } else {
+                            //alert("You cannot delete this Course, This Course assigned with Institution Courses.");
+                            window.location.reload();
+                        }
+                    }
+                });
+            } else {
+                alert("Something wrong please try after some time !");
+            }
+        });
+
+        $(".edit-column").click(function() {
+            var id = $(this).attr("id");
+
+            $(".data-list").hide();
+            $(".data-filter").hide();
+            $(".data-update").show();
+            $(".header-title").html("Edit Course");
+            $('#multiple-checkboxes-update').multiselect({
+                enableCaseInsensitiveFiltering: true,
+                includeSelectAllOption: true
+            });
+
+            if (id) {
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    url: 'list_course',
+                    data: {
+                        id: id
+                    },
+                    success: function(data) {
+
+                        $(".course_code").val(data[1]);
+                        $(".course_name").val(data[2]);
+                        $(".branch_id").val(data[3]);
+                        $(".description").val(data[5]);
+                        $(".duration").val(data[4]);
+                        $(".course_type").val(data[9]);
+                        $(".course_id").val(data[0]);
+                        //$(".documents_list").html(html.documents);
+                        var doc = data[8]
+                        var dataarray = data.toString().split(",");
+                        $("#multiple-checkboxes-update").val(dataarray);
+                        $("#multiple-checkboxes-update").multiselect("refresh");
+                        $(".image_path").val(data[6]);
+                        $(".status").val(data[7]);
+                    }
+                });
+            } else {
+                alert("Something wrong please try after some time !");
+            }
+        });
+
+
+    });
+</script>
+
+
+<script>
+    $(document).ready(function() {
+        $(".search_course").submit(function(event) {
+            var formData = {
+                search: $("#searchput").val(),
+
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "search_course",
+                data: formData,
+                dataType: "json",
+                encode: true,
+            }).done(function(data) {
+                console.log(data.length);
+                $("tbody tr").remove();
+                for (i = 0; i < data.length; i++) {
+                    $('tbody').append("<tr><td>" + data[i]['CourseName'] + "</td><td><span style='cursor:pointer;font-size:1em;' class='fa fa-pencil edit-column' id='" + data[i]['id'] + "'></span><span style='cursor:pointer;margin-left:15px;color:red;font-size:1em;' class='fa fa-trash delete-column' id='" + data[i]['id'] + "'></span></td></tr>");
+                }
+
+
+            });
+
+            event.preventDefault();
+        });
+    });
+    $(document).ready(function() {
+        $('#multiple-checkboxes').multiselect({
+            includeSelectAllOption: true,
+            enableCaseInsensitiveFiltering: true,
+        });
+    })
+</script>
+<script>
+    $('#course_code').change(function(){
+        var corcode = $('#course_code').val();  //#branch_code is the id given in html template 
+        if(corcode){
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: 'is_course_code',//type the url path that you have given here
+                data: { corcode: corcode }, //first code is used in request.POST['code'], 2nd code is variable that get from html page, change first code if necessary, if changed then change in view also 
+                success: function (data) {
+                    if(data == 0){
+                        $('#course_code_msg').css("color",'green');
+                        $('#course_code_msg i').remove();
+                        $('#course_code_msg i span').remove();
+                        $('#course_code_msg').append('<i class="fa fa-check"></i>');
+                        $('#course_code_msg i').append('<span class="tooltiptext">Course Code Available</span>');
+                        $('#course_code_msg').show();
+                    }
+                    else{                        
+                        $('#course_code_msg').css("color",'red');
+                        $('#course_code_msg i').remove();
+                        $('#course_code_msg i span').remove();
+	                    $('#course_code_msg').append('<i class="fa fa-times"></i>');
+                        $('#course_code_msg i').append('<span class="tooltiptext">Course Code Not Available</span>');
+                        $('#course_code_msg').show();
+                    }
+                }
+            });
+        }
+        else{
+            $('#course_code_msg').hide();
+        }
+    });
+</script>
+<script>
+    $('#course_name').change(function(){
+        var corname = $('#course_name').val();  //#branch_code is the id given in html template 
+        if(corname){
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: 'is_course_name',//type the url path that you have given here
+                data: { corname: corname }, //first code is used in request.POST['code'], 2nd code is variable that get from html page, change first code if necessary, if changed then change in view also 
+                success: function (data) {
+                    if(data == 0){
+                        $('#course_name_msg').css("color",'green');
+                        $('#course_name_msg i').remove();
+                        $('#course_name_msg i span').remove();
+                        $('#course_name_msg').append('<i class="fa fa-check"></i>');
+                        $('#course_name_msg i').append('<span class="tooltiptext">Course Name Available</span>');
+                        $('#course_name_msg').show();
+                    }
+                    else{                        
+                        $('#course_name_msg').css("color",'red');
+                        $('#course_name_msg i').remove();
+                        $('#course_name_msg i span').remove();
+	                    $('#course_name_msg').append('<i class="fa fa-times"></i>');
+                        $('#course_name_msg i').append('<span class="tooltiptext">Course Name Not Available</span>');
+                        $('#course_name_msg').show();
+                    }
+                }
+            });
+        }
+        else{
+            $('#course_name_msg').hide();
+        }
+    });
+</script>
+{% endblock %}

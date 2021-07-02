@@ -1,0 +1,694 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="page-inner">
+    <div class="page-title mb-15">
+        <div class="pull-left">
+            <h3 class="breadcrumb-header">Students</h3>
+            <p class="text-muted mb-0">Students under Institutions</p>
+        </div>
+        <div class="pull-right">
+            <div class="btn-group mx-auto">
+                <ol class="breadcrumb hide-phone pt-4 pb-4 m-0">
+                    <li class="breadcrumb-item"><a href="#">Eduvy</a></li>
+                    <li class="breadcrumb-item"><a href="#">Institutions</a></li>
+                    <li class="breadcrumb-item active">Students</li>
+                </ol>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div id="main-wrapper">
+        <div class="row student-main">
+            <div class="col-lg-12">
+                <div class="panel mb-0">
+                    <div class="panel-body">
+                        <h4 class="mt-0 header-title"></h4>
+                        <!--<p class="text-muted mb-30 font-15">Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient monte.</p>-->
+                        <div class="row data-filter" style="padding-top:50px;">
+                            <div class="col-md-1">
+                            </div>
+                            <form method="post" action="search_student" class="search_student">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input type="search" id="searchput" name="search" placeholder="Search..."
+                                            class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <button name="searchbutt" id="searchbut"
+                                            class="btn btn-warning form-control">Search</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <button name="addnew" class="btn btn-success form-control btn-add">Add <b
+                                            class="fa fa-plus"></b></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <br>
+                            <table class="table table-hover table-striped table-responsive data-list">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                       
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!--Table Content 1-->
+                                    <tr>
+                                        {% if student %}
+                                        {% for i in student %}
+                                        <td scope="row">{{i.name}}</td>
+                                       
+                                        <td>
+                                            <a href="#" style="cursor:pointer;font-size:1em;" class="fa fa-pencil edit-column"
+                                                id="{{i.id}}">
+                                            </a>
+                                            <a href="#" style="cursor:pointer;margin-left:15px;color:red;font-size:1em;"
+                                                class="fa fa-trash delete-column" id = "{{i.id}}">
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% else %}
+                                        <td ></td>
+                                        <td ></td>
+                                        <td ></td>
+                                        <td >No Data</td>
+                                        <td ></td>
+                                        <td ></td>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                            {% comment %} just copy this nav element fully to other pages and just change the name of the context. Here context is branches {% endcomment %}
+                            {% comment %} Pagination Starts {% endcomment %}
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    {% if student.paginator.num_pages > 1 %}
+                                    {% if student.has_previous %}
+                                    <li>
+                                        <a href="?page={{student.previous_page_number }}">
+                                            << Prev</a>
+                                    </li>
+                                    {% endif %}
+                                    {% for pg in student.paginator.page_range%}
+                                    {% if posts.number == pg %}
+                                    <li class="active" style="font-weight: 700;"><a href="?page={{ pg }}">{{pg}}</a>
+                                    </li>
+                                    {% else %}
+                                    <li><a href="?page={{ pg }}">{{pg}}</a></li>
+                                    {% endif %}
+                                    {% endfor %}
+                                    {% if student.has_next %}
+                                    <li>
+                                        <a href="?page={{student.next_page_number }}">Next >></a>
+                                    </li>
+                                    {% endif %}
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                            {% comment %} Pagination Ends {% endcomment %}
+
+                            <style>
+                                .student_email {
+                                    position: relative;
+                                    width: 100%;
+                                }
+                                input#student_email {
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    width: 100%;
+                                    z-index: 10;
+                                }
+                                .validation-message{
+                                    padding:10px;
+                                    font-weight:600;
+                                    color:green;
+                                    display:none;
+                                    position: absolute;
+                                    top: 0;
+                                    right: 0;
+                                    z-index: 11;
+                                }
+                                .fa.fa-check {
+                                    position: relative;
+                                }
+                                .fa.fa-cross {
+                                    position: relative;
+                                }
+                                #student_email_msg .tooltiptext {
+                                    visibility: hidden;
+                                    width: 120px;
+                                    background-color: black;
+                                    color: #fff;
+                                    text-align: center;
+                                    border-radius: 6px;
+                                    padding: 5px 0;
+                        
+                                    /* Position the tooltip */
+                                    position: absolute;
+                                    z-index: 100;
+                                }
+                                #student_email_msg i:hover .tooltiptext {
+                                    visibility: visible;
+                                }
+                                #student_email{
+                                    text-transform:uppercase;
+                                }
+                                #student_email{
+                                    
+                                    text-transform:capitalize;
+                                }
+                            </style>
+
+                            <!--On click Add Button-->
+                            <div class="row data-add" style="padding-top:50px;display:none">
+                            {% if request.session.defaultinstitute != '1' %}
+                                <form method="post" enctype="multipart/form-data" action="students">
+                                    <div class="col-lg-12">
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label>Batch Year</label>
+                                                <input type="number" class="form-control" name="batch" required="">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label>Course</label>
+                                                {% if request.user.is_institute %}
+                                                <select class="form-control course_id" name="course_id">
+                                                    
+                                                    {% if courses %}
+                                                    {% for c in courses %}
+                                                    {% for i in course %}
+                                                    {% if c.id == i.id %}
+                                                        <option value="{{i.id}}">{{i.CourseName}}</option>
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                    {% endfor %}
+                                                    {% endif %}
+
+                                                </select>
+                                                {% endif %}
+                                                {% if request.user.is_superuser %}
+                                                <select class="form-control course_id" name="course_id">
+                                                    {% if course %}
+                                                        {% if  insticourse %}
+                                                            {% for i in course %}
+                                                                    {% for ic in insticourse %}
+                                                                        {% if ic.courseId_id == i.id %}
+                                                                            <option value="{{i.id}}">{{i.CourseName}}</option>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                            {% endfor %}
+                                                        {% else %}                                                    
+                                                            {% for i in course %}                                                    
+                                                                <option value="{{i.id}}">{{i.CourseName}}</option>
+                                                            {% endfor %}
+                                                        {% endif %}
+                                                    {% endif %}
+
+                                                </select>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label>Section</label>
+                                                <select class="form-control batch_section" name="batch_section">
+                                                    <option value="1st Year">1st Year</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label>Name</label>
+                                                <input type="text" class="form-control" name="name" placeholder="Name" onkeypress="return a(event);"
+                                                    required="">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label>E-mail</label>
+                                                <div class="student_email">
+                                                    <input type="text" class="form-control email" name="email" id="student_email"
+                                                        placeholder="Email" required="">
+                                                    <div class="validation-message" id="student_email_msg"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label>Phone</label>
+                                                <input type="tel" class="form-control phone-in" name="phone" placeholder="Phone"
+                                                    maxlength="10" onkeypress="return isNumber(event)" required="">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label>Address</label>
+                                                <input type="text" class="form-control" name="address"
+                                                    placeholder="Address">
+                                                <!-- <input type="textarea" class="form-control" name="branch_code" placeholder="Address" required> -->
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label>Guardian Name</label>
+                                                <input type="text" class="form-control" name="guardian_name"
+                                                    placeholder="Guardian Name" onkeypress="return a(event);" required="">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group"><label>Guardian Phone</label>
+                                                <input type="tel" class="form-control guardian_phone" name="guardian_phone"
+                                                    placeholder="Guardian Phone"" required="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12" style="padding-top:50px;">
+                                        <div class="col-lg-6 text-right"><button class="btn btn-success">Submit</button>
+                                        </div>
+                                        <div class="col-lg-6 text-left"><button type="button"
+                                                class="btn btn-danger btn-close">Close</button></div>
+                                    </div>
+                                </form>
+                            {% else %}
+                            <p>Change Institutions to add datas</p>
+                            {% endif %}
+                            </div>
+
+                            <div class="row data-update" style="padding-top:50px;display:none">
+                                <form method="post" enctype="multipart/form-data" action="update_students">
+                                    <div class="col-lg-12">
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label>Batch Year</label>
+                                                <input type="number" class="form-control batch_year" name="batch"
+                                                    required="">
+                                                <input type="number" class="form-control stud_id" name="id"
+                                                    required="" style="display:none;">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label>Course</label>
+                                                <select class="form-control course_id" name="course_id">
+                                                    {% if course %}
+                                                        {% if  insticourse %}
+                                                            {% for i in course %}
+                                                                    {% for ic in insticourse %}
+                                                                        {% if ic.courseId_id == i.id %}
+                                                                            <option value="{{i.id}}">{{i.CourseName}}</option>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                            {% endfor %}
+                                                        {% else %}                                                    
+                                                            {% for i in course %}                                                    
+                                                                <option value="{{i.id}}">{{i.CourseName}}</option>
+                                                            {% endfor %}
+                                                        {% endif %}
+                                                    {% endif %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label>Section</label>
+                                                <select class="form-control batch_section" name="batch_section">
+                                                    
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label>Name</label>
+                                                <input type="text" class="form-control name" name="name"
+                                                    placeholder="Name" required="">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label>E-mail</label>
+                                                <div class="student_email">
+                                                    <input type="text" class="form-control email" name="email" id="student_email"
+                                                        placeholder="Email" required="">
+                                                    <div class="validation-message" id="student_email_msg"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label>Phone</label>
+                                                <input type="tel" class="form-control phone-in" name="phone"
+                                                    placeholder="Phone" maxlength="10"
+                                                    onkeypress="return isNumber(event)" required="">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label>Address</label>
+                                                <input type="text" class="form-control address" name="address"
+                                                    placeholder="Address">
+                                                <!-- <input type="textarea" class="form-control" name="branch_code" placeholder="Address" required> -->
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label>Guardian Name</label>
+                                                <input type="text" class="form-control guardian_name"
+                                                    name="guardian_name" placeholder="Guardian Name" required="">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label>Guardian Phone</label>
+                                                <input type="tel" class="form-control guardian_phone"
+                                                    name="guardian_phone" placeholder="Guardian Phone" required="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12" style="padding-top:50px;">
+                                        <div class="col-lg-6 text-right"><button class="btn btn-success">Submit</button>
+                                        </div>
+                                        <div class="col-lg-6 text-left"><button type="button"
+                                                class="btn btn-danger btn-close">Close</button></div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row student-view" style="display:none;">
+            <div class="col-lg-12">
+                <div class="panel mb-0">
+                    <div class="panel-body">
+                        <h4 class="mt-0 header-title">Student Details</h4>
+                        <table class="table table-responsive table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th colspan="2">Student Id</th>
+                                    <td colspan="2" class="view_student_id"></td>
+                                </tr>
+                                <tr>
+                                    <th>Student Name</th>
+                                    <td class="view_student_name">
+                                    </td>
+                                    <th>Course</th>
+                                    <td class="view_course_name">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Batch</th>
+                                    <td class="view_batch_year">
+                                    </td>
+                                    <th>Section</th>
+                                    <td class="view_batch_section">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Email</th>
+                                    <td class="view_student_email"></td>
+                                    <th>Phone</th>
+                                    <td class="view_student_phone"></td>
+                                </tr>
+                                <tr>
+                                    <th>Guardian Name</th>
+                                    <td class="view_guardian_name"></td>
+                                    <th>Guardian Phone</th>
+                                    <td class="view_guardian_phone"></td>
+                                </tr>
+                                <tr>
+                                    <th>Address</th>
+                                    <td class="view_address" colspan="3">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <button class="btn btn-warning btn-view-close">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-footer">
+        <!--<p>&copy; 2019 Fadmin - Crafted with <i class="mdi mdi-heart text-danger"></i> by ThemesBoss.</p>-->
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        $(".btn-add").click(function () {
+
+            $(".data-list").hide();
+            $(".data-filter").hide();
+            $(".data-add").show();
+            $(".header-title").html("Add Staff");
+
+        });
+
+        $(".btn-close").click(function () {
+
+            $(".data-list").show();
+            $(".data-filter").show();
+            $(".data-add").hide();
+            $(".data-update").hide();
+            $(".header-title").html("");
+
+        });
+
+        $(".btn-view-close").click(function () {
+            $(".student-main").show();
+            $(".student-view").hide();
+
+        });
+
+        $(".edit-column").click(function () {
+            var id = $(this).attr("id");
+            $(".data-list").hide();
+            $(".data-filter").hide();
+            $(".data-update").show();
+            $(".header-title").html("Edit Branch");
+            if (id) {
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    url: 'list_student',
+                    data: { id: id },
+                    success: function (html) {
+
+                        $(".batch_year").val(html[0]);
+                        document.getElementsByClassName("batch_section").value = html[1];
+                        console.log(html[1]);
+                        $(".batch_section").val(html[1]);
+                        $(".name").val(html[2]);
+                        $(".email").val(html[3]);
+                        $(".guardian_name").val(html[4]);
+                        $(".phone").val(html[5]);
+                        $(".guardian_phone").val(html[6]);
+                        $(".address").val(html[7]);
+                        document.getElementsByClassName("course_id").value = html[8];
+                        // $(".course_id").val(html[8]);
+                        $(".stud_id").val(html[9]);
+                    }
+                });
+            }
+            else {
+                alert("Something wrong please try after some time !");
+            }
+        });
+
+
+        $(".view-column").click(function () {
+            var id = $(this).attr("id");
+
+            if (id) {
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    url: 'http://eduvyerp.co.in/eduvy/admin/',
+                    data: { _id: id },
+                    success: function (html) {
+                        $(".student-main").hide();
+                        $(".student-view").show();
+
+                        $(".view_batch_year").html(html.batch);
+                        $(".view_batch_section").html(html.batch_section);
+                        $(".view_student_name").html(html.name);
+                        $(".view_student_email").html(html.email);
+                        $(".view_student_phone").html(html.phone);
+                        $(".view_guardian_name").html(html.guardianName);
+                        $(".view_guardian_phone").html(html.guardianPhone);
+                        $(".view_address").html(html.address);
+                        $(".view_course_name").html(html.courseName);
+                        $(".view_student_id").html(html.studentId);
+                    }
+                });
+            }
+            else {
+                alert("Something wrong please try after some time !");
+            }
+        });
+        $(".course_id").change(function () {
+            //.batch_section
+            var id = $(this).val();
+            if (id) {
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    url: 'list_course_duration',
+                    data: { course: id },
+                    success: function (html) {
+                        $(".batch_section").html("");
+                        for (i = 1; i <= html; i++) {
+                            y = i;
+                            if (i == 1) {
+                                b = "1st";
+                            }
+                            else if (i == 2) {
+                                b = "2nd";
+                            }
+                            else if (i == 3) {
+                                b = "3rd";
+                            }
+                            else {
+                                b = String(i) + "th";
+                            }
+                            $(".batch_section").append('<option value="' + y + '">' + b + " Year" + '</option>');
+                        }
+                    }
+                });
+            }
+            else {
+                alert("Something wrong please try after some time !");
+            }
+        });
+        $(".delete-column").click(function () {
+            var id = $(this).attr("id");
+
+            if (confirm("Are you sure ? You want to delete this ?")) {
+                $.ajax({
+                    type: 'POST',
+                    url: 'delete_student',
+                    data: { id: id },
+                    success: function (html) {
+                        window.location.reload();
+                    }
+                });
+            }
+            else {
+                alert("Something wrong please try after some time !");
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+     $(".phone-in").change(function () {
+         var mobile_num = /^[6789][0-9]{9}$/;
+         if (mobile_num.test($(".phone-in").val())) {
+            return true;
+         } else {
+            alert("Invalid Mobile Number")
+            return false;
+         }
+   });
+ });
+</script>
+<script>
+    $(document).ready(function () {
+     $(".guardian_phone").change(function () {
+         var guardian_mobile_num = /^[6789][0-9]{9}$/;
+         if (guardian_mobile_num.test($(".guardian_phone").val())) {
+            return true;
+         } else {
+            alert("Invalid Mobile Number")
+            return false;
+         }
+   });
+ });
+</script>
+<script type="text/javascript">
+    function a(event){
+       var char = event.which;
+    if(char>31 && char !=32 && (char<65 || char>90) && (char<97 || char>122)) {
+         return false;
+    }
+  }
+</script>
+<script>
+    $('#student_email').change(function(){
+        var stdemail = $('#student_email').val();  
+		console.log(stdemail);
+        if(stdemail){
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: 'is_student_email',
+                data: { stdemail: stdemail },
+                success: function (data) {
+					console.log(data);
+                    if(data == 0){
+                        $('#student_email_msg').css("color",'green');
+                        $('#student_email_msg i').remove();
+                        $('#student_email_msg i span').remove();
+                        $('#student_email_msg').append('<i class="fa fa-check"></i>');
+                        $('#student_email_msg i').append('<span class="tooltiptext">Student Email Available</span>');
+                        $('#student_email_msg').show();
+                    }
+                    else{                        
+                        $('#student_email_msg').css("color",'red');
+                        $('#student_email_msg i').remove();
+                        $('#student_email_msg i span').remove();
+                        $('#student_email_msg').append('<i class="fa fa-times"></i>');
+                        $('#student_email_msg i').append('<span class="tooltiptext">Student Email Not Available</span>');
+                        $('#student_email_msg').show();
+                    }
+                }
+            });
+        }
+        else{
+            $('#student_email_msg').hide();
+        }
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $(".search_student").submit(function(event) {
+            var formData = {
+                search: $("#searchput").val(),
+
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "search_student",
+                data: formData,
+                dataType: "json",
+                encode: true,
+            }).done(function(data) {
+                console.log(data.length);
+                $("tbody tr").remove();
+                for (i = 0; i < data.length; i++) {
+                    $('tbody').append("<tr><td>" + data[i]['name'] + "</td><td><span style='cursor:pointer;font-size:1em;' class='fa fa-pencil edit-column' id='" + data[i]['id'] + "'></span><span style='cursor:pointer;margin-left:15px;color:red;font-size:1em;' class='fa fa-trash delete-column' id='" + data[i]['id'] + "'></span></td></tr>");
+                }
+
+
+            });
+
+            event.preventDefault();
+        });
+    });
+</script>
+{% endblock %}

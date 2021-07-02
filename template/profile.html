@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <script>
+        $(document).ready(function () {
+            
+            $(".btn-edit").click(function () {
+
+                $(".data-list").hide();
+                $(".data-filter").hide();
+                $(".data-add").show();
+
+            });
+
+            $(".btn-close").click(function () {
+
+                $(".data-list").show();
+                $(".data-filter").show();
+                $(".data-add").hide();
+                $(".data-update").hide();
+
+            });
+        })
+    </script>
+<div class="page-inner">
+    <div class="page-title mb-15">
+        <div class="pull-left">
+            <h3 class="breadcrumb-header">Profile</h3>
+            <p class="text-muted mb-0">Here you can modify your Business Informations</p>
+        </div>
+        <div class="pull-right">
+            <div class="btn-group mx-auto">
+            <ol class="breadcrumb hide-phone pt-4 pb-4 m-0">
+                <li class="breadcrumb-item"><a href="#">Eduvy</a></li>
+                <li class="breadcrumb-item"><a href="#">Profile</a></li>
+                <li class="breadcrumb-item active">Business Informations</li>
+            </ol>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel mb-0">
+                    <div class="panel-body">
+                        <h4 class="mt-0 header-title">Business Informations</h4>
+                        <p class="text-muted mb-30 font-15"></p>
+                        <div>
+                        {% if request.user.is_superuser %}
+                        {% if request.session.defaultinstitute != 1 %}
+                            <div class="container" style="max-width:100% !important;padding-left:5px !important;padding-right:5px !important;">
+                                <div class="row search-button-hide">
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <button type="button" class="btn btn-success form-control btn-edit">Edit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" style="padding-top: 50px">
+                                    <div class="col-md-12">
+                                        <table class="table table-responsive table-bordered data-list">
+                                            <tbody><tr>
+                                                <td rowspan="2" style="text-align:center;"><img style="max-height:60px;" src="media/{{user.logo}}"></td>
+                                                <th>Institute Name</th>
+                                                <th>Address</th>
+                                                <th>Chairman Name</th>
+                                            </tr>
+                                            <tr> 
+                                                <td>{{user.name}}</td>
+                                                <td>{{user.address}}</td>
+                                                <td>{{user.chairmanName}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Contact Person</th>
+                                                <th>Email</th>
+                                                <th>Phone</th>
+                                                <th>Status</th>
+                                            </tr>
+                                            <tr>
+                                                <td>{{user.contactPersonName}}</td>
+                                                <td>{{user.contactPersonEmail}}</td>
+                                                <td>{{user.contactPersonPhone}}</td>
+                                                <td>{{user.Status}}</td>
+                                            </tr>
+                                            <tr><th colspan="5" style="text-align:center;">Description</th></tr>
+                                            <tr>
+                                            {% if user.description %}
+                                                <td colspan="5" style="text-align:center;">{{user.description}}</td>
+                                            {% else %}
+                                                <td colspan="5" style="text-align:center;">No Description</td>
+                                            {% endif %}
+                                            </tr>
+                                        </tbody></table>
+                                        <div class="row data-add" style="padding-top: 50px;display:none">
+                                            <form method="post" enctype="multipart/form-data" action="profile">
+                                                <div class="col-lg-12">
+                                                    <div class="col-lg-3">
+                                                        <div class="form-group">
+                                                            <label>Brochure</label>
+                                                            <input type="file" class="form-control" name="brochure"> </div>
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <div class="form-group">
+                                                            <label>Institution Name</label>
+                                                            <input type="text" class="form-control" value="{{user.name}}" name="name" placeholder="Institution Name" required=""> </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label>Address</label>
+                                                            <input type="text" class="form-control" value="{{user.address}}" name="address" placeholder="Address" required=""> </div>
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <div class="form-group">
+                                                            <label>Chairman Name</label>
+                                                            <input type="text" class="form-control" value="{{user.chairmanName}}" name="chairman_name" placeholder="Chairman Name" required=""> </div>
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <div class="form-group">
+                                                            <label>Contact Person Name</label>
+                                                            <input type="text" class="form-control" value="{{user.contactPersonName}}" name="contact_person_name" placeholder="Contact Person Name" required=""> </div>
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <div class="form-group">
+                                                            <label>Contact Person Email</label>
+                                                            <input type="text" class="form-control" value="{{user.contactPersonEmail}}" name="contact_person_email" placeholder="Contact Person Email" required=""> </div>
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <div class="form-group">
+                                                            <label>Contact Person Phone</label>
+                                                            <input type="text" class="form-control" value="{{user.contactPersonPhone}}" name="contact_person_phone" placeholder="Contact Person Phone" required=""> </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label>Description</label>
+                                                            <input type="text" class="form-control" value="{{user.description}}" name="description" placeholder="Description" required=""> </div>
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <div class="form-group">
+                                                            <label>Logo</label>
+                                                            <input type="file" class="form-control" name="institution_logo"> </div>
+                                                            <input type="text" name="_id" value="{{user.id}}" style="display:none" hidden="">
+                                                            <input type="text" name="image_path" value="assets/images/brochure/Artboard_22.png" style="display:none" hidden="">
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <div class="form-group">
+                                                            <label>Status</label>
+                                                            <select class="form-control" name="status">
+                                                                <option value="Active">Active</option>
+                                                                <option value="Inactive">Inactive</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12" style="padding-top:50px;">
+                                                    <div class="col-lg-6 text-right">
+                                                        <button class="btn btn-success">Submit</button>
+                                                    </div>
+                                                    <div class="col-lg-6 text-left">
+                                                        <button type="button" class="btn btn-danger btn-close">Close</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <h4>No Data Available</h4>
+                        {% endif %}
+                        {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-footer">
+        <!--<p>&copy; 2019 Fadmin - Crafted with <i class="mdi mdi-heart text-danger"></i> by ThemesBoss.</p>-->
+    </div>
+</div>
+{% endblock %}

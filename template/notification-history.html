@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-inner">
+               <div class="page-title mb-15">
+                  <div class="pull-left">
+                     <h3 class="breadcrumb-header">Notification History</h3>
+                     <p class="text-muted mb-0">Notification history under Notification </p>
+                  </div>
+                  <div class="pull-right">
+                     <div class="btn-group mx-auto">
+                        <ol class="breadcrumb hide-phone pt-4 pb-4 m-0">
+                           <li class="breadcrumb-item"><a href="#">Eduvy</a></li>
+                           <li class="breadcrumb-item"><a href="#">Notification</a></li>
+                           <li class="breadcrumb-item active">Notification history</li>
+                        </ol>
+                     </div>
+                  </div>
+                  <div class="clearfix"></div>
+               </div>
+               <div id="main-wrapper">
+                  <div class="row">
+                     <div class="col-lg-12">
+                        <div class="panel mb-0">
+                           <div class="panel-body">
+                              <h4 class="mt-0 header-title"></h4>
+                              <!--<p class="text-muted mb-30 font-15">Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient monte.</p>-->
+                              <div class="row data-filter" style="padding-top:50px;">
+                                    <div class="col-md-1">
+                                    </div>
+                                    <form method="post" action="">
+                                       <div class="col-md-6">
+                                          <div class="form-group">
+                                             <input type="search" id="searchput" name="search" placeholder="Search..." class="form-control">
+                                          </div>
+                                       </div>
+                                       <div class="col-md-2">
+                                          <div class="form-group">
+                                             <button name="searchbutt" id="searchbut" class="btn btn-warning form-control">Search</button>
+                                          </div>
+                                       </div>
+                                    </form>
+																		<div class="col-md-2">
+                                       <div class="form-group">
+                                          <button name="addnew" class="btn btn-success form-control btn-add">Add <b class="fa fa-plus"></b></button>
+                                       </div>
+                                    </div>
+																	</div>
+							  <div>
+                                 <table class="table table-striped table-responsive data-list">
+								    <thead>  
+									    <tr><th scope="col">Title</th>
+										<th scope="col">Message</th>
+										<th scope="col">User Type</th>
+										<th scope="col">Time</th>
+									</tr></thead>
+                                    <tbody>
+																			<tr>
+										<td scope="row">New Update !!</td>
+										<td>New Update available on play store.</td>
+										<td>ALL</td>
+										<td>2021-06-02 - 08:13:50am</td>
+										</tr>
+																				<tr>
+										<td scope="row">New Update !!</td>
+										<td>New Update available on play store.</td>
+										<td>ALL</td>
+										<td>2021-06-02 - 09:00:03am</td>
+										</tr>
+																				<tr>
+										<td scope="row">Test</td>
+										<td>for testing purpose only</td>
+										<td>ALL</td>
+										<td>2021-06-02 - 09:02:09am</td>
+										</tr>
+										                                    </tbody>
+                                 </table>
+								 <div class="row data-add" style="padding-top:50px;display:none">  
+								 <form method="post" enctype="multipart/form-data" action="http://eduvyerp.co.in/eduvy/admin/notification/add">
+								    <div class="col-lg-12">
+									    <div class="col-lg-4">
+									        <div class="form-group">
+									            <label>User type</label>
+												<select class="form-control" name="user_type">
+												<option value="ALL">ALL</option>
+												<option value="INSTITUTION">INSTITUTION ONLY</option>
+												<option value="STUDENT">STUDENTS ONLY</option>
+												</select>
+									        </div>
+									    </div>
+									    <div class="col-lg-4">
+									        <div class="form-group">
+									            <label>Title</label>
+									            <input type="text" class="form-control" name="title" placeholder="Title" required="">
+									        </div>
+									    </div>
+										<div class="col-lg-4">
+									        <div class="form-group">
+									            <label>Message</label>
+									            <input type="text" class="form-control" name="message" placeholder="Message" required="">
+									        </div>
+									    </div>
+									</div>
+								    <div class="col-lg-12" style="padding-top:50px;">
+									    <div class="col-lg-6 text-right"><button class="btn btn-success">Submit</button></div>
+									    <div class="col-lg-6 text-left"><button type="button" class="btn btn-danger btn-close">Close</button></div>
+									</div>
+								</form>
+								 </div>
+								 
+								 <div class="row data-update" style="padding-top:50px;display:none">  
+								 <form method="post" enctype="multipart/form-data" action="http://eduvyerp.co.in/eduvy/admin/user/update">
+								 <div class="col-lg-12">
+									    <div class="col-lg-4">
+									        <div class="form-group">
+									            <label>Staff</label>
+												<select class="form-control staff_id" name="staff_id">
+																								</select>
+									        </div>
+									    </div>
+									    <div class="col-lg-4">
+									        <div class="form-group">
+									            <label>Username</label>
+									            <input type="text" class="form-control username" name="username" placeholder="Username" required="">
+									        </div>
+									    </div>
+										<div class="col-lg-4">
+									        <div class="form-group">
+									            <label>Password</label>
+									            <input type="password" class="form-control" name="password" placeholder="Password" required="">
+									        </div>
+									    </div>
+										<div class="col-lg-4">
+									        <div class="form-group">
+									            <label>User group</label>
+									            <select class="form-control user_group" name="user_group_id">
+																								</select>
+									        </div>
+									    </div>
+										<div class="col-lg-4">
+									        <div class="form-group">
+									            <label>Status</label>
+									            <select class="form-control status" name="status">
+												    <option value="Active">Active</option>
+												    <option value="Inactive">Inactive</option>
+												</select>
+												<input type="text" name="id" hidden="" class="user_id" style="display:none">
+									        </div>
+									    </div>
+									</div>
+								    <div class="col-lg-12" style="padding-top:50px;">
+									    <div class="col-lg-6 text-right"><button class="btn btn-success">Submit</button></div>
+									    <div class="col-lg-6 text-left"><button type="button" class="btn btn-danger btn-close">Close</button></div>
+									</div>
+									</form>
+								 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="page-footer">
+                  <!--<p>&copy; 2019 Fadmin - Crafted with <i class="mdi mdi-heart text-danger"></i> by ThemesBoss.</p>-->
+               </div>
+            </div>
+{% endblock  %}

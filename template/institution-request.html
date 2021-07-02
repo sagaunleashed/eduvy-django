@@ -1,0 +1,424 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="page-inner">
+               <div class="page-title mb-15">
+                  <div class="pull-left">
+                     <h3 class="breadcrumb-header">Institutions</h3>
+                     <p class="text-muted mb-0">Institutes under Institutions</p>
+                  </div>
+                  <div class="pull-right">
+                     <div class="btn-group mx-auto">
+                        <ol class="breadcrumb hide-phone pt-4 pb-4 m-0">
+                           <li class="breadcrumb-item"><a href="#">Eduvy</a></li>
+                           <li class="breadcrumb-item"><a href="#">Institutions</a></li>
+                           <li class="breadcrumb-item active">Institutions</li>
+                        </ol>
+                     </div>
+                  </div>
+                  <div class="clearfix"></div>
+               </div>
+               <div id="main-wrapper">
+                  <div class="row">
+                     <div class="col-lg-12">
+                        <div class="panel mb-0">
+                           <div class="panel-body">
+                              <h4 class="mt-0 header-title"></h4>
+                              <!--<p class="text-muted mb-30 font-15">Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient monte.</p>-->
+                              <div class="row data-filter" style="padding-top:50px;">
+                                    <div class="col-md-1">
+                                    </div>
+                                    <form method="post" action="">
+                                       <div class="col-md-6">
+                                          <div class="form-group">
+                                             <input type="search" id="searchput" name="search" placeholder="Search..." class="form-control">
+                                          </div>
+                                       </div>
+                                       <div class="col-md-2">
+                                          <div class="form-group">
+                                             <button name="searchbutt" id="searchbut" class="btn btn-warning form-control">Search</button>
+                                          </div>
+                                       </div>
+                                    </form>
+								</div>
+							  <div>
+                                 <table class="table table-striped table-responsive data-list">
+								    <thead>  
+									    
+									    <th scope="col">Institution</th>
+										
+										<th scope="col">Actions</th>
+									</tr></thead>
+                                    <tbody>
+																			<tr>
+										
+										<td title="Bangalore group of institutions">Bangalore group of i....</td>
+										
+										<td>
+																				<button class="btn btn-success edit-column" id="1">Approve</button>
+										<button class="btn btn-danger delete-column" id="1">Reject</button>
+										                                        </td>
+										</tr>
+										
+									
+										                                    </tbody>
+                                 </table>
+								 <!--<div class="row data-add" style="padding-top:50px;display:none">  
+								 <form method="post" enctype="multipart/form-data" action="http://eduvyerp.co.in/eduvy/admin/institution/add_institution">
+								    <div class="col-lg-12">
+									    <div class="col-lg-6">
+									        <div class="form-group">
+									            <label>Institution Name</label>
+									            <input type="text" class="form-control" name="institution_name" placeholder="Institution Name" required>
+									        </div>
+									    </div>
+										<div class="col-lg-6">
+									        <div class="form-group">
+									            <label>Address</label>
+									            <input type="text" class="form-control" name="address" placeholder="Address" required>
+									        </div>
+									    </div>
+										<div class="col-lg-3">
+									        <div class="form-group">
+									            <label>Chairman Name</label>
+									            <input type="text" class="form-control" name="chairman_name" placeholder="Chairman Name" required>
+									        </div>
+									    </div>
+										<div class="col-lg-3">
+									        <div class="form-group">
+									            <label>Contact Person Name</label>
+									            <input type="text" class="form-control" name="contact_person_name" placeholder="Contact Person Name" required>
+									        </div>
+									    </div>
+										<div class="col-lg-3">
+									        <div class="form-group">
+									            <label>Contact Person Email</label>
+									            <input type="text" class="form-control" name="contact_person_email" placeholder="Contact Person Email" required>
+									        </div>
+									    </div>
+									    <div class="col-lg-3">
+									        <div class="form-group">
+									            <label>Contact Person Phone</label>
+									            <input type="text" class="form-control" name="contact_person_phone" placeholder="Contact Person Phone" required>
+									        </div>
+									    </div>
+									    <div class="col-lg-3">
+									        <div class="form-group">
+									            <label>Courses</label>
+									             <select name="courses[]" id="example-enableCaseInsensitiveFiltering" class="form-control" multiple>
+																										<option value="1">Bachelor of Business Administration</option>
+																												<option value="2">Bachelor of Business Management</option>
+																												<option value="3">Bachelor of Business Administration[Management]</option>
+																												<option value="4">Bachelor of Business Administration[Hotel Resourse & Management]</option>
+																												<option value="5">Bachelor of Business Administration[Finance]</option>
+																												<option value="6">Bachelor of Management Studies</option>
+																												<option value="7">Bachelor of Business Administration[Hons]</option>
+																												<option value="8">Bachelor of Business Administration[International Business]</option>
+																												<option value="9">Bachelor of Tourism and Travel Management</option>
+																												<option value="10">Bachelor of Business Administration[Computer Application]</option>
+																												<option value="11">Bachelor of Business Administration[Digital Marketing]</option>
+																												<option value="12">Bachelor of Business Administration[Retail Management]</option>
+																												<option value="13">Bachelor of Business Administration[Logistics Management]</option>
+																												<option value="14">Bachelor of Business Administration[Entrepreneurship]</option>
+																												<option value="15">Bachelor of Business Administration[Travel and Tourism Management]</option>
+																												<option value="16">Bachelor of Business Administration[Information Technology]</option>
+																												<option value="17">Bachelor of Business Administration[Hospital Management]</option>
+																												<option value="18">Bachelor of Business Administration[Hospitality & Tourism]</option>
+																												<option value="19">Bachelor of Business Administration[Sports Management]</option>
+																												<option value="20">Bachelor of Business Administration[Hotel Management]</option>
+																												<option value="21">Bachelor in Hospital Administration</option>
+																												<option value="22">Bachelor in Tourism Management</option>
+																												<option value="23">Bachelor of Business Administration[Banking & Insurance]</option>
+																												<option value="24">Bachelor of Business Administration[Event Management]</option>
+																												<option value="25">Bachelor of Business Administration[Tourism ]</option>
+																												<option value="26">Bachelor of Business Administration[Operation Management]</option>
+																												<option value="27">Bachelor of Business Administration[Finance and Accounting]</option>
+																												<option value="28">Bachelor of Business Administration[Foreign Trade]</option>
+																												<option value="29">Bachelor of Business Administration[Supply Chain Management]</option>
+																												<option value="30">Bachelor of Business Administration[Sales & Marketing]</option>
+																												<option value="31">Bachelor of Business Administration[Banking]</option>
+																												<option value="32">Bachelor of Business Administration[Accounting]</option>
+																												<option value="33">Bachelor of Business Administration[Professionalf]</option>
+																												<option value="34">Bachelor of Business Administration[E-Commerce]</option>
+																												<option value="35">Bachelor of Business Administration[Media Management]</option>
+																												<option value="36">Bachelor of Business Management[Human Resource Management]</option>
+																												<option value="37">Bachelor of Management Studies[Marketing]</option>
+																												<option value="38">Bachelor of Business Administration[Tour & Travel Management]</option>
+																												<option value="39">Bachelor in Business Economics</option>
+																												<option value="40">Bachelor of Business Management[Marketing Management]</option>
+																												<option value="41">Bachelor of Business Management[International Business]</option>
+																												<option value="42">Bachelor of Business Administration[Agribusiness Management]</option>
+																												<option value="43">Bachelor of Business Administration[Management]</option>
+																												<option value="44">Bachelor of Business Administration[Insurance]</option>
+																												<option value="45">Bachelor of Business Administration[Communication Management]</option>
+																												<option value="46">Bachelor of Business Administration[Risk Management]</option>
+																												<option value="47">Bachelor of Business Administration[Air Travel Management]</option>
+																												<option value="48">B.Tech[Computer Science]</option>
+																												<option value="49">B.Tech[Civil Engineering]</option>
+																												<option value="50">B.Tech[Electronics & Communication Engineering]</option>
+																												<option value="51">Bachelor of Engineering[Mechanical Engineering]</option>
+																												<option value="52">Bachelor of Engineering[Civil Engineering]</option>
+																												<option value="53">Bachelor of Engineering[Electrical & Electronics Engineering]</option>
+																												<option value="54">B.Tech[Information Technology]</option>
+																												<option value="55">Bachelor of Engineering[Computer Science Engineering]</option>
+																												<option value="56">Bachelor of Engineering[Electronics & Communication Engineering]</option>
+																												<option value="57">B.Tech(Electrical Engineering)</option>
+																												<option value="58">Bachelor of Engineering[Electrical Engineering]</option>
+																												<option value="59">Bachelor of Engineering[Information Technology]</option>
+																												<option value="60">Bachelor of Engineering[Electrical & Telecommunication Engineering]</option>
+																												<option value="61">Bachelor of Engineering[Computer Engineering]</option>
+																												<option value="62">Bachelor of Engineering[Chemical  Engineering]</option>
+																												<option value="63">B.Tech(Chemical Engineering)</option>
+																												<option value="64">B.Tech(Biotechnology)</option>
+																												<option value="65">B.Tech(Automobile Engineering)</option>
+																												<option value="66">B.Tech(Artificial Engineering & Machine Learning)</option>
+																												<option value="67">B.Tech(Computer Engineering)</option>
+																												<option value="68">B.Tech(Electronics & Telecommunication Engineering)</option>
+																												<option value="69">B.Tech(Data Science)</option>
+																												<option value="70">B.Tech(Agricultural Engineering)</option>
+																												<option value="71">Bachelor of Engineering[Automobile  Engineering]</option>
+																												<option value="72">B.Tech(Food Technology)</option>
+																												<option value="73">B.Tech(Cyber Security)</option>
+																												<option value="74">B.Tech(Cyber Security)</option>
+																												<option value="75">Bachelor of Engineering[Information Science Engineering]</option>
+																												<option value="76">Bachelor of Engineering[Biomedical  Engineering]</option>
+																												<option value="77">Bachelor of Engineering[Aeronautical Engineering]</option>
+																												<option value="78">testing course</option>
+																												<option value="79">B.Tech(Mechatronics)</option>
+																												<option value="80">B.Tech(Mechatronics)</option>
+																												<option value="81">Bachelor of Engineering[Chemical Engineering]</option>
+																												<option value="84">B.Tech(Petroleum Engineering)</option>
+																												<option value="85">B.Tech(Electronics Engineering)</option>
+																												<option value="86">B.Tech(Aerospace Engineering)</option>
+																												<option value="87">Bachelor of Engineering[Biotechnology]</option>
+																												<option value="88">B.Tech(Production Engineering)</option>
+																												<option value="89">B.Tech(Dairy Technology)</option>
+																												<option value="90">B.Tech(Instrumentation & Control  Engineering)</option>
+																												<option value="91">Bachelor of Engineering[Production Engineering]</option>
+																												<option value="92">B.Tech(Textile Technology)</option>
+																												<option value="93">B.Tech(Metallurgical & Materials Engineering)</option>
+																												<option value="94">B.Tech(Marine Engineering)</option>
+																												<option value="95">B.Tech(Applied ELectronics and Instrumentation)</option>
+																												<option value="96">B.Tech(Big Data Analytics)</option>
+																												<option value="97">Bachelor of Engineering[Instrumentation Engineering]</option>
+																												<option value="98">B.Tech(Electronics & Communication Engineering)</option>
+																												<option value="99">B.Tech(Environmental Engineering)</option>
+																												<option value="100">Bachelor of Engineering[Instrumentation & Control Engineering]</option>
+																												<option value="101">B.Tech(Metallurgical Engineering)</option>
+																												<option value="102">B.Tech(Bioinformatics)</option>
+																												<option value="103">B.Tech(Instrumentation Engineering)</option>
+																												<option value="104">Bachelor of Engineering[Mining Engineering]</option>
+																												<option value="105">B.Tech(Robotics)</option>
+																												<option value="106">B.Tech(Textile Engineering)</option>
+																										<option value="active">Active</option>
+												<option value="inactive">Inactive</option>
+												</select>
+									        </div>
+									    </div>
+										<div class="col-lg-3">
+									        <div class="form-group">
+									            <label>College Affiliation</label>
+									            <input type="file" class="form-control" name="institution_image" required>
+									        </div>
+									    </div>
+										<div class="col-lg-3">
+									        <div class="form-group">
+									            <label>Status</label>
+									            <select class="form-control" name="status">
+												    <option value="Active">Active</option>
+												    <option value="Inactive">Inactive</option>
+												</select>
+									        </div>
+									    </div>
+									</div>
+								    <div class="col-lg-12" style="padding-top:50px;">
+									    <div class="col-lg-6 text-right"><button class="btn btn-success">Submit</button></div>
+									    <div class="col-lg-6 text-left"><button type="button" class="btn btn-danger btn-close">Close</button></div>
+									</div>
+								</form>
+								 </div>
+								 
+								 <div class="row data-update" style="padding-top:50px;display:none">  
+								 <form method="post" enctype="multipart/form-data" action="http://eduvyerp.co.in/eduvy/admin/institution/update_institution">
+								 <div class="col-lg-12">
+									    <div class="col-lg-6">
+									        <div class="form-group">
+									            <label>Institution Name</label>
+									            <input type="text" class="form-control institution_name" name="institution_name" placeholder="Institution Name" required>
+									        </div>
+									    </div>
+										<div class="col-lg-6">
+									        <div class="form-group">
+									            <label>Address</label>
+									            <input type="text" class="form-control address" name="address" placeholder="Address" required>
+									        </div>
+									    </div>
+										<div class="col-lg-3">
+									        <div class="form-group">
+									            <label>Chairman Name</label>
+									            <input type="text" class="form-control chairman_name" name="chairman_name" placeholder="Chairman Name" required>
+									        </div>
+									    </div>
+										<div class="col-lg-3">
+									        <div class="form-group">
+									            <label>Contact Person Name</label>
+									            <input type="text" class="form-control contact_person_name" name="contact_person_name" placeholder="Contact Person Name" required>
+									        </div>
+									    </div>
+										<div class="col-lg-3">
+									        <div class="form-group">
+									            <label>Contact Person Email</label>
+									            <input type="text" class="form-control contact_person_email" name="contact_person_email" placeholder="Contact Person Email" required>
+									        </div>
+									    </div>
+									    <div class="col-lg-3">
+									        <div class="form-group">
+									            <label>Contact Person Phone</label>
+									            <input type="text" class="form-control contact_person_phone" name="contact_person_phone" placeholder="Contact Person Phone" required>
+									        </div>
+									    </div>
+									    <div class="col-lg-3">
+									        <div class="form-group">
+									            <label>Courses</label>
+									             <select name="courses[]" id="example-enableCaseInsensitiveFiltering2" class="form-control" multiple>
+																										<option value="1">Bachelor of Business Administration</option>
+																												<option value="2">Bachelor of Business Management</option>
+																												<option value="3">Bachelor of Business Administration[Management]</option>
+																												<option value="4">Bachelor of Business Administration[Hotel Resourse & Management]</option>
+																												<option value="5">Bachelor of Business Administration[Finance]</option>
+																												<option value="6">Bachelor of Management Studies</option>
+																												<option value="7">Bachelor of Business Administration[Hons]</option>
+																												<option value="8">Bachelor of Business Administration[International Business]</option>
+																												<option value="9">Bachelor of Tourism and Travel Management</option>
+																												<option value="10">Bachelor of Business Administration[Computer Application]</option>
+																												<option value="11">Bachelor of Business Administration[Digital Marketing]</option>
+																												<option value="12">Bachelor of Business Administration[Retail Management]</option>
+																												<option value="13">Bachelor of Business Administration[Logistics Management]</option>
+																												<option value="14">Bachelor of Business Administration[Entrepreneurship]</option>
+																												<option value="15">Bachelor of Business Administration[Travel and Tourism Management]</option>
+																												<option value="16">Bachelor of Business Administration[Information Technology]</option>
+																												<option value="17">Bachelor of Business Administration[Hospital Management]</option>
+																												<option value="18">Bachelor of Business Administration[Hospitality & Tourism]</option>
+																												<option value="19">Bachelor of Business Administration[Sports Management]</option>
+																												<option value="20">Bachelor of Business Administration[Hotel Management]</option>
+																												<option value="21">Bachelor in Hospital Administration</option>
+																												<option value="22">Bachelor in Tourism Management</option>
+																												<option value="23">Bachelor of Business Administration[Banking & Insurance]</option>
+																												<option value="24">Bachelor of Business Administration[Event Management]</option>
+																												<option value="25">Bachelor of Business Administration[Tourism ]</option>
+																												<option value="26">Bachelor of Business Administration[Operation Management]</option>
+																												<option value="27">Bachelor of Business Administration[Finance and Accounting]</option>
+																												<option value="28">Bachelor of Business Administration[Foreign Trade]</option>
+																												<option value="29">Bachelor of Business Administration[Supply Chain Management]</option>
+																												<option value="30">Bachelor of Business Administration[Sales & Marketing]</option>
+																												<option value="31">Bachelor of Business Administration[Banking]</option>
+																												<option value="32">Bachelor of Business Administration[Accounting]</option>
+																												<option value="33">Bachelor of Business Administration[Professionalf]</option>
+																												<option value="34">Bachelor of Business Administration[E-Commerce]</option>
+																												<option value="35">Bachelor of Business Administration[Media Management]</option>
+																												<option value="36">Bachelor of Business Management[Human Resource Management]</option>
+																												<option value="37">Bachelor of Management Studies[Marketing]</option>
+																												<option value="38">Bachelor of Business Administration[Tour & Travel Management]</option>
+																												<option value="39">Bachelor in Business Economics</option>
+																												<option value="40">Bachelor of Business Management[Marketing Management]</option>
+																												<option value="41">Bachelor of Business Management[International Business]</option>
+																												<option value="42">Bachelor of Business Administration[Agribusiness Management]</option>
+																												<option value="43">Bachelor of Business Administration[Management]</option>
+																												<option value="44">Bachelor of Business Administration[Insurance]</option>
+																												<option value="45">Bachelor of Business Administration[Communication Management]</option>
+																												<option value="46">Bachelor of Business Administration[Risk Management]</option>
+																												<option value="47">Bachelor of Business Administration[Air Travel Management]</option>
+																												<option value="48">B.Tech[Computer Science]</option>
+																												<option value="49">B.Tech[Civil Engineering]</option>
+																												<option value="50">B.Tech[Electronics & Communication Engineering]</option>
+																												<option value="51">Bachelor of Engineering[Mechanical Engineering]</option>
+																												<option value="52">Bachelor of Engineering[Civil Engineering]</option>
+																												<option value="53">Bachelor of Engineering[Electrical & Electronics Engineering]</option>
+																												<option value="54">B.Tech[Information Technology]</option>
+																												<option value="55">Bachelor of Engineering[Computer Science Engineering]</option>
+																												<option value="56">Bachelor of Engineering[Electronics & Communication Engineering]</option>
+																												<option value="57">B.Tech(Electrical Engineering)</option>
+																												<option value="58">Bachelor of Engineering[Electrical Engineering]</option>
+																												<option value="59">Bachelor of Engineering[Information Technology]</option>
+																												<option value="60">Bachelor of Engineering[Electrical & Telecommunication Engineering]</option>
+																												<option value="61">Bachelor of Engineering[Computer Engineering]</option>
+																												<option value="62">Bachelor of Engineering[Chemical  Engineering]</option>
+																												<option value="63">B.Tech(Chemical Engineering)</option>
+																												<option value="64">B.Tech(Biotechnology)</option>
+																												<option value="65">B.Tech(Automobile Engineering)</option>
+																												<option value="66">B.Tech(Artificial Engineering & Machine Learning)</option>
+																												<option value="67">B.Tech(Computer Engineering)</option>
+																												<option value="68">B.Tech(Electronics & Telecommunication Engineering)</option>
+																												<option value="69">B.Tech(Data Science)</option>
+																												<option value="70">B.Tech(Agricultural Engineering)</option>
+																												<option value="71">Bachelor of Engineering[Automobile  Engineering]</option>
+																												<option value="72">B.Tech(Food Technology)</option>
+																												<option value="73">B.Tech(Cyber Security)</option>
+																												<option value="74">B.Tech(Cyber Security)</option>
+																												<option value="75">Bachelor of Engineering[Information Science Engineering]</option>
+																												<option value="76">Bachelor of Engineering[Biomedical  Engineering]</option>
+																												<option value="77">Bachelor of Engineering[Aeronautical Engineering]</option>
+																												<option value="78">testing course</option>
+																												<option value="79">B.Tech(Mechatronics)</option>
+																												<option value="80">B.Tech(Mechatronics)</option>
+																												<option value="81">Bachelor of Engineering[Chemical Engineering]</option>
+																												<option value="84">B.Tech(Petroleum Engineering)</option>
+																												<option value="85">B.Tech(Electronics Engineering)</option>
+																												<option value="86">B.Tech(Aerospace Engineering)</option>
+																												<option value="87">Bachelor of Engineering[Biotechnology]</option>
+																												<option value="88">B.Tech(Production Engineering)</option>
+																												<option value="89">B.Tech(Dairy Technology)</option>
+																												<option value="90">B.Tech(Instrumentation & Control  Engineering)</option>
+																												<option value="91">Bachelor of Engineering[Production Engineering]</option>
+																												<option value="92">B.Tech(Textile Technology)</option>
+																												<option value="93">B.Tech(Metallurgical & Materials Engineering)</option>
+																												<option value="94">B.Tech(Marine Engineering)</option>
+																												<option value="95">B.Tech(Applied ELectronics and Instrumentation)</option>
+																												<option value="96">B.Tech(Big Data Analytics)</option>
+																												<option value="97">Bachelor of Engineering[Instrumentation Engineering]</option>
+																												<option value="98">B.Tech(Electronics & Communication Engineering)</option>
+																												<option value="99">B.Tech(Environmental Engineering)</option>
+																												<option value="100">Bachelor of Engineering[Instrumentation & Control Engineering]</option>
+																												<option value="101">B.Tech(Metallurgical Engineering)</option>
+																												<option value="102">B.Tech(Bioinformatics)</option>
+																												<option value="103">B.Tech(Instrumentation Engineering)</option>
+																												<option value="104">Bachelor of Engineering[Mining Engineering]</option>
+																												<option value="105">B.Tech(Robotics)</option>
+																												<option value="106">B.Tech(Textile Engineering)</option>
+																										</select>
+									        </div>
+									    </div>
+										<div class="col-lg-3">
+									        <div class="form-group">
+									            <label>College Affiliation</label>
+									            <input type="file" class="form-control" name="institution_image">
+												<input type="text" name="_id" class="institution_id" hidden style="display:none">
+												<input type="text" name="image_path" class="image_path" hidden style="display:none">
+									        </div>
+									    </div>
+										<div class="col-lg-3">
+									        <div class="form-group">
+									            <label>Status</label>
+									            <select class="form-control status" name="status">
+												    <option value="Active">Active</option>
+												    <option value="Inactive">Inactive</option>
+												</select>
+									        </div>
+									    </div>
+									</div>
+								    <div class="col-lg-12" style="padding-top:50px;">
+									    <div class="col-lg-6 text-right"><button class="btn btn-success">Submit</button></div>
+									    <div class="col-lg-6 text-left"><button type="button" class="btn btn-danger btn-close">Close</button></div>
+									</div>
+									</form>
+								 </div>-->
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="page-footer">
+                  <!--<p>&copy; 2019 Fadmin - Crafted with <i class="mdi mdi-heart text-danger"></i> by ThemesBoss.</p>-->
+               </div>
+            </div>
+{% endblock  %}

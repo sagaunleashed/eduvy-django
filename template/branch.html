@@ -1,0 +1,523 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    td {
+        vertical-align: inherit !important;
+    }
+
+    .eduvy-img-listview {
+        max-width: 70px;
+        max-height: 70px;
+    }
+</style>
+<div class="page-inner" id="main-section">
+    <div class="page-title mb-15">
+        <div class="pull-left">
+            <h3 class="breadcrumb-header">Branches</h3>
+            <p class="text-muted mb-0">Branches under Institutions</p>
+        </div>
+        <div class="pull-right">
+            <div class="btn-group mx-auto">
+                <ol class="breadcrumb hide-phone pt-4 pb-4 m-0">
+                    <li class="breadcrumb-item"><a href="#">Eduvy</a></li>
+                    <li class="breadcrumb-item"><a href="#">Institutions</a></li>
+                    <li class="breadcrumb-item active">Branches</li>
+                </ol>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel mb-0">
+                    <div class="panel-body">
+                        <h4 class="mt-0 header-title"></h4>
+                        <!--<p class="text-muted mb-30 font-15">Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient monte.</p>-->
+                        <div class="row data-filter" style="padding-top:50px;">
+                            <div class="col-md-1">
+                            </div>
+                            <form method="post" action="search_branch" class="search_branch">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input type="search" id="searchput" name="search" placeholder="Search..."
+                                            class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <button name="searchbutt" id="searchbut"
+                                            class="btn btn-warning form-control">Search</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <button name="addnew" class="btn btn-success form-control btn-add">Add <b
+                                            class="fa fa-plus"></b></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <table class="table table-striped table-responsive data-list">
+                                <thead>
+                                    <tr>
+                                        
+                                        <th>Branch Name</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for branch in branches %}
+                                    <tr class="search-results">
+                                       
+                                        <td>{{branch.BranchName}}</td>
+                                        
+                                        <td>
+                                            <span style="cursor:pointer;font-size:1em;" class="fa fa-pencil edit-column"
+                                                id="{{branch.id}}">
+                                            </span>
+                                            <span style="cursor:pointer;margin-left:15px;color:red;font-size:1em;"
+                                                class="fa fa-trash delete-column" id="{{branch.id}}">
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            {% comment %} just copy this nav element fully to other pages and just change the name of
+                            the context. Here context is branches {% endcomment %}
+                            {% comment %} Pagination Starts {% endcomment %}
+                            <nav aria-label="Page navigation example pagination-class" id="pagination">
+                                <ul class="pagination">
+                                    {% if branches.paginator.num_pages > 1 %}
+                                    {% if branches.has_previous %}
+                                    <li>
+                                        <a href="?page={{branches.previous_page_number }}">
+                                            << Prev</a>
+                                    </li>
+                                    {% endif %}
+                                    {% for pg in branches.paginator.page_range%}
+                                    {% if posts.number == pg %}
+                                    <li class="active" style="font-weight: 700;"><a href="?page={{ pg }}">{{pg}}</a>
+                                    </li>
+                                    {% else %}
+                                    <li><a href="?page={{ pg }}">{{pg}}</a></li>
+                                    {% endif %}
+                                    {% endfor %}
+                                    {% if branches.has_next %}
+                                    <li>
+                                        <a href="?page={{branches.next_page_number }}">Next >></a>
+                                    </li>
+                                    {% endif %}
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                            {% comment %} Ends {% endcomment %}
+                            {% comment %} Ends {% endcomment %}
+                            <style>
+                                .branch_code {
+                                    position: relative;
+                                    width: 100%;
+                                }
+                                input#branch_code {
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    width: 100%;
+                                    z-index: 10;
+                                }
+                                .validation-message{
+                                    padding:10px;
+                                    font-weight:600;
+                                    color:green;
+                                    display:none;
+                                    position: absolute;
+                                    top: 0;
+                                    right: 0;
+                                    z-index: 11;
+                                }
+                                .fa.fa-check {
+                                    position: relative;
+                                }
+                                .fa.fa-cross {
+                                    position: relative;
+                                }
+                                #branch_code_msg .tooltiptext {
+                                    visibility: hidden;
+                                    width: 120px;
+                                    background-color: black;
+                                    color: #fff;
+                                    text-align: center;
+                                    border-radius: 6px;
+                                    padding: 5px 0;
+                        
+                                    /* Position the tooltip */
+                                    position: absolute;
+                                    z-index: 100;
+                                }
+                                #branch_code_msg i:hover .tooltiptext {
+                                    visibility: visible;
+                                }
+                                #branch_code{
+                                    text-transform:uppercase;
+                                }
+                                #branch_name{
+                                    
+                                    text-transform:capitalize;
+                                }
+                                
+                                .branch_name {
+                                    position: relative;
+                                    width: 100%;
+                                }
+                                input#branch_name {
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    width: 100%;
+                                    z-index: 10;
+                                }
+                                #branch_name_msg .tooltiptext {
+                                    visibility: hidden;
+                                    width: 120px;
+                                    background-color: black;
+                                    color: #fff;
+                                    text-align: center;
+                                    border-radius: 6px;
+                                    padding: 5px 0;
+
+                                    /* Position the tooltip */
+                                    position: absolute;
+                                    z-index: 100;
+                                }
+                                #branch_name_msg i:hover .tooltiptext {
+                                    visibility: visible;
+                                }
+                                #branch_name{
+                                    text-transform:uppercase;
+                                }
+                                #branch_name{
+                                    
+                                    text-transform:capitalize;
+                                }
+
+
+                            </style>
+                            <div class="row data-add" style="padding-top:50px;display:none">
+                                <form method="POST" enctype="multipart/form-data" id="branch-submit">
+                                    {% csrf_token %}
+                                    <div class="col-lg-12">
+                                        <div class="col-lg-3 my-5">
+                                            <div class="form-group">
+                                                <label>Branch Code</label>
+                                                <div class="branch_code">
+                                                    <input type="text" class="form-control" name="branch_code"
+                                                        placeholder="Branch Code" id="branch_code" required="" style="text-transform:uppercase;">
+                                                    <p class="validation-message" id="branch_code_msg"></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 my-5">
+
+                                            <div class="form-group">
+                                                <label>Branch Name</label>
+                                                <div class="branch_name">
+                                                    <input type="text" class="form-control" name="branch_name"
+                                                        placeholder="Branch Name" id="branch_name" required="" style="text-transform:uppercase;">
+                                                    <p class="validation-message" id="branch_name_msg"></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 my-5">
+                                            <div class="form-group">
+                                                <label>Image</label>
+                                                <input type="file" class="form-control" id="branch_image"
+                                                    name="branch_image" required="">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 my-5">
+                                            <div class="form-group">
+                                                <label>Status</label>
+                                                <select class="form-control" name="status" id="branch_status">
+                                                    <option value="Active">Active</option>
+                                                    <option value="Inactive">Inactive</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12" style="padding-top:50px;">
+                                        <div class="col-lg-6 text-right"><input class="btn btn-success" type="submit"
+                                                value="Submit">
+                                        </div>
+                                        <div class="col-lg-6 text-left"><button type="button"
+                                                class="btn btn-danger btn-close">Close</button></div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="row data-update" style="padding-top:50px;display:none">
+                                <form method="post" enctype="multipart/form-data" id="update_branch"
+                                    action="update_branch">
+                                    <div class="col-lg-12">
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Branch Code</label>                                              
+        
+                                                <input type="text" class="form-control branch_code" id="branch_code" name="branch_code"
+                                                    placeholder="Branch Code" required="">
+                                                
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Branch Name</label>
+                                                <input type="text" class="form-control branch_name" name="branch_name"
+                                                    placeholder="Branch Name" required="">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Image</label>
+                                                <input type="file" class="form-control" class="branch_image"
+                                                    id="branch_image" name="branch_image_up">
+                                                <input type="text" name="_id" class="branch_id" hidden=""
+                                                    style="display:none">
+                                                <input type="text" name="image_path" class="image_path" hidden=""
+                                                    style="display:none" value="asd">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Status</label>
+                                                <select class="form-control status" name="status">
+                                                    <option value="Active">Active</option>
+                                                    <option value="Inactive">Inactive</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12" style="padding-top:50px;">
+                                        <div class="col-lg-6 text-right"><input value="Submit" type="submit"
+                                                class="btn btn-success">
+                                        </div>
+                                        <div class="col-lg-6 text-left"><button type="button"
+                                                class="btn btn-danger btn-close">Close</button></div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-footer">
+        <!--<p>&copy; 2019 Fadmin - Crafted with <i class="mdi mdi-heart text-danger"></i> by ThemesBoss.</p>-->
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $(".search_branch").submit(function (event) {
+            var formData = {
+                search: $("#searchput").val(),
+
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "search_branch",
+                data: formData,
+                dataType: "json",
+                encode: true,
+            }).done(function (data) {
+                console.log(data.length);
+                $("tbody tr").remove();
+                for (i = 0; i < data.length; i++) {
+                    $('tbody').append("<tr><td>" + data[i]['BranchName'] + "</td><td><span style='cursor:pointer;font-size:1em;' class='fa fa-pencil edit-column' id='" + data[i]['id'] + "'></span><span style='cursor:pointer;margin-left:15px;color:red;font-size:1em;' class='fa fa-trash delete-column' id='" + data[i]['id'] + "'></span></td></tr>");
+                }
+
+
+            });
+
+            event.preventDefault();
+        });
+    });
+    $(document).ready(function () {
+
+        $(".btn-add").click(function () {
+
+            $(".data-list").hide();
+            $(".data-filter").hide();
+            $(".data-add").show();
+            $('#pagination').hide();//pagination-hide-on-add
+            $(".header-title").html("Add Branch");
+
+        });
+
+        $(".btn-close").click(function () {
+
+            $(".data-list").show();
+            $(".data-filter").show();
+            $('#pagination').show(); //pagination-show-on-close
+            $(".data-add").hide();
+            $(".data-update").hide();
+            $(".header-title").html("");
+
+        });
+        $(".edit-column").click(function () {
+            var ids = $(this).attr("id");
+
+            $(".data-list").hide();
+            $(".data-filter").hide();
+            $(".data-update").show();
+            $(".header-title").html("Edit Branch");
+            $('.pagination-class').hide();
+        });
+    });
+
+</script>
+<script>
+    $('#branch_name').change(function(){
+        var name = $('#branch_name').val();  //#branch_code is the id given in html template 
+        if(name){
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: 'is_branch_name',//type the url path that you have given here
+                data: { name: name }, //first code is used in request.POST['code'], 2nd code is variable that get from html page, change first code if necessary, if changed then change in view also 
+                success: function (data) {
+                    if(data == 0){
+                        $('#branch_name_msg').css("color",'green');
+                        $('#branch_name_msg i').remove();
+                        $('#branch_name_msg i span').remove();
+                        $('#branch_name_msg').append('<i class="fa fa-check"></i>');
+                        $('#branch_name_msg i').append('<span class="tooltiptext">Branch Name Available</span>');
+                        $('#branch_name_msg').show();
+                    }
+                    else{                        
+                        $('#branch_name_msg').css("color",'red');
+                        $('#branch_name_msg i').remove();
+                        $('#branch_name_msg i span').remove();
+	                    $('#branch_name_msg').append('<i class="fa fa-times"></i>');
+                        $('#branch_name_msg i').append('<span class="tooltiptext">Branch Name Not Available</span>');
+                        $('#branch_name_msg').show();
+                    }
+                }
+            });
+        }
+        else{
+            $('#branch_name_msg').hide();
+        }
+    });
+</script>
+<script>
+    $('#branch_code').change(function(){        
+        console.log("changed");
+        var code = $('#branch_code').val();
+        if(code){
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: 'is_branch_code',
+                data: { code: code },
+                success: function (data) {
+                    if(data == 0){
+                        $('#branch_code_msg').css("color",'green');
+                        $('#branch_code_msg i').remove();
+                        $('#branch_code_msg i span').remove();
+                        $('#branch_code_msg').append('<i class="fa fa-check"></i>');
+                        $('#branch_code_msg i').append('<span class="tooltiptext">Branch Code Available</span>');
+                        $('#branch_code_msg').show();
+                    }
+                    else{                        
+                        $('#branch_code_msg').css("color",'red');
+                        $('#branch_code_msg i').remove();
+                        $('#branch_code_msg i span').remove();
+	                    $('#branch_code_msg').append('<i class="fa fa-times"></i>');
+                        $('#branch_code_msg i').append('<span class="tooltiptext">Branch Code Not Available</span>');
+                        $('#branch_code_msg').show();
+                    }
+                }
+            });
+        }
+        else{
+            $('#branch_code_msg').hide();
+        }
+    })
+    $(".data-list").on("click", ".edit-column", function () {
+        var id = $(this).attr("id");
+        var code = $(".branch_code").val();
+        $('#pagination').hide();//pagination-hide-on-edit
+
+        if (id) {
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: 'list_branch',
+                data: { id: id },
+                success: function (data) {
+                    $(".data-list").hide();
+                    $(".data-filter").hide();
+                    $(".data-update").show();
+
+                    console.log(data);
+
+                    $(".branch_id").val(data[0]);
+                    $(".branch_code").val(data[1]);
+                    $(".branch_name").val(data[2]);
+                    $(".image_path").val(data[3]);
+                    $(".status").val(data[4]);
+                }
+            });
+        }
+        else {
+            alert("Something wrong please try after some time !");
+        }
+    });
+    $(".data-list").on("click", ".delete-column", function () {
+        var ids = $(this).attr("id");
+
+        if (confirm("Are you sure ? You want to delete this ?")) {
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: 'delete_branch',
+                data: { id: ids },
+                success: function (data) {
+                    if (data) {
+                        $("#main-section").load(location.href + " #main-section");
+                    }
+                }
+            });
+        }
+        else {
+            alert("Something wrong please try after some time !");
+        }
+    });
+
+
+    $(document).on('subimt', '#branch-submit', function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: 'branch',
+            dataType: 'json',
+            data: {
+                branch_id: $('.branch_id').val(),
+                branch_code: $('#branch_code').val(),
+                branch_name: $('#branch_name').val(),
+                branch_image: $('#branch_image').val(),
+                branch_stats: $('#branch_status').val(),
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+            },
+            success: function (data) {
+
+
+            }
+        })
+    });
+
+
+</script>
+{% endblock %}

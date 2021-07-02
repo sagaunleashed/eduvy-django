@@ -1,0 +1,418 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    .branch-pack {
+        width: 250px;
+        height: 100px;
+        background: #572d5e;
+        color: white;
+        border-radius: 3px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .branch-pack-checked {
+        background: linear-gradient(138deg, #c72b60, #793a87) !important;
+        color: #fff !important;
+    }
+
+    .grid-branch {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, 250px);
+        grid-gap: 25px;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .new-institute-branch {
+        margin: 60px 0px;
+    }
+
+    .new-institute-branch h4 {
+        margin: 10px 0px;
+    }
+
+    .branch-pack .checker {
+        display: none;
+    }
+    .institute_branch_grid{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    #save_value {
+        margin: 25px 0px;
+        width: 150px;
+        align-self: center;
+    
+    }
+</style>
+<div class="page-inner">
+    <div class="page-title mb-15">
+        <div class="pull-left">
+            <h3 class="breadcrumb-header">Institution Branches</h3>
+            <p class="text-muted mb-0">Branches under Institution</p>
+        </div>
+        <div class="pull-right">
+            <div class="btn-group mx-auto">
+                <ol class="breadcrumb hide-phone pt-4 pb-4 m-0">
+                    <li class="breadcrumb-item"><a href="#">Eduvy</a></li>
+                    <li class="breadcrumb-item"><a href="#">Institutions</a></li>
+                    <li class="breadcrumb-item active">Branches</li>
+                </ol>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel mb-0">
+                    <div class="panel-body">
+                        <h4 class="mt-0 header-title"></h4>
+                        <div class="row data-filter" style="padding-top: 50px;">
+                            <div class="col-md-1">
+                            </div>
+                            <form method="post" action="http://eduvyerp.co.in/eduvy/admin/institute_branch/index"
+                                autocomplete="off">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <input type="search" id="searchput" name="search" placeholder="Search..."
+                                            class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <button name="searchbutt" id="searchbut"
+                                            class="btn btn-warning form-control">Search</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <a href="institutebranch_modeltocsv" name="export" type="submit"
+                                            class="btn btn-info form-control">Export</a>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <button name="addnew" class="btn btn-success form-control btn-add">Add <b
+                                            class="fa fa-plus"></b></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <br>
+                            <!--Table Section-->
+                            <table class="table table-hover table-striped table-responsive data-list" style="">
+                                <thead>
+                                    <tr>
+                                        
+                                        <th scope="col">Branch</th>
+                                        <th scope="col">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for i in insti%}
+                                    <tr>
+                                        
+                                        <td>{{i.branchId.BranchName}}</td>
+                                       
+                                        <td>
+                                            <span style="cursor:pointer;font-size:1em;" class="fa fa-pencil edit-column"
+                                                id="{{i.id}}">
+                                            </span>
+                                            <span style="cursor:pointer;margin-left:15px;color:red;font-size:1em;"
+                                                class="fa fa-trash delete-column" id="{{i.id}}">
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+
+                            <nav aria-label="Page navigation example" id="pagination">
+                                <ul class="pagination">
+                                    {% if insti.paginator.num_pages > 1 %}
+                                    {% if insti.has_previous %}
+                                    <li>
+                                        <a href="?page={{insti.previous_page_number }}">
+                                            << Prev</a>
+                                    </li>
+                                    {% endif %}
+                                    {% for pg in insti.paginator.page_range%}
+                                    {% if posts.number == pg %}
+                                    <li class="active" style="font-weight: 700;"><a href="?page={{ pg }}">{{pg}}</a>
+                                    </li>
+                                    {% else %}
+                                    <li><a href="?page={{ pg }}">{{pg}}</a></li>
+                                    {% endif %}
+                                    {% endfor %}
+                                    {% if insti.has_next %}
+                                    <li>
+                                        <a href="?page={{insti.next_page_number }}">Next >></a>
+                                    </li>
+                                    {% endif %}
+                                    {% endif %}
+                                </ul>
+                            </nav>
+
+
+                            <!--On click Add Button-->
+                            <div class="row data-add" style="padding-top: 50px; display: none;">
+                                <div class="col-lg-12" id="insti_branch_institute">
+                                    <div class="my-5 institute_branch_grid">
+                                        <div class="grid-branch">
+                                            {% for i in branch %}
+                                            <div class="branch-col">                                                  
+                                                <div class="branch-pack" id="{{i.id}}">
+                                                    <input name="programming" type="checkbox" value="{{i.id}}" />
+                                                    {{i.BranchName}}
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                        <button id="save_value" name="save_value"
+                                            class="btn btn-success">Submit</button>
+                                    </div>
+                                    <form method="post" action="newinstitutebranch" enctype="multipart/form-data" class="new-institute-branch">
+                                        <div class="col-lg-12">
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Branch Code</label>
+                                                <div class="inst_branch_code">
+                                                    <input type="text" class="form-control" name="branch_code"
+                                                        placeholder="Branch Code" id="inst_branch_code" required="">
+                                                    <p class="validation-message" id="inst_branch_code_msg"></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+
+                                            <div class="form-group">
+                                                <label>Branch Name</label>
+                                                <div class="inst_branch_name">
+                                                    <input type="text" class="form-control" name="branch_name"
+                                                        placeholder="Branch Name" id="inst_branch_name" required="">
+                                                    <p class="validation-message" id="inst_branch_name_msg"></p>   
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Image</label>
+                                                <input type="file" class="form-control" id="branch_image"
+                                                    name="branch_image" required="">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Status</label>
+                                                <select class="form-control" name="status" id="branch_status">
+                                                    <option value="Active">Active</option>
+                                                    <option value="Inactive">Inactive</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12" style="padding-top:50px;">
+                                        <div class="col-lg-6 text-right"><input class="btn btn-success" type="submit"
+                                                value="Submit">
+                                        </div>
+                                        <div class="col-lg-6 text-left"><button type="button"
+                                                class="btn btn-danger btn-close">Close</button></div>
+                                    </div>
+                                    </form>
+                                </div>
+                            <div class="col-lg-12" id="insti_branch_superuser">
+                                <p>Change Institution to Add Datas</p>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row data-update" style="padding-top:50px;display:none">
+                            <form method="post" enctype="multipart/form-data" action="update_institutebranch">
+                                <div class="col-lg-12">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label>Branch Code</label>
+                                            <input type="text" class="form-control branch_code" name="branch_code"
+                                                required="">
+                                            <input type="text" style="display:none;" hidden=""
+                                                class="form-control institute_branch_id" name="id">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label>Branch</label>
+                                            <select class="form-control list_branch" name="branch">
+                                                {% for i in branch%}
+                                                <option value="{{i.id}}">{{i.BranchName}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label>Status</label>
+                                            <select name="status" class="form-control status">
+                                                <option value="Active">Active</option>
+                                                <option value="Inactive">Inactive</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12" style="padding-top:50px;">
+                                    <div class="col-lg-6 text-right"><button class="btn btn-success">Submit</button>
+                                    </div>
+                                    <div class="col-lg-6 text-left"><button type="button"
+                                            class="btn btn-danger btn-close">Close</button></div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page-footer">
+    <!--<p>&copy; 2019 Fadmin - Crafted with <i class="mdi mdi-heart text-danger"></i> by ThemesBoss.</p>-->
+</div>
+</div>
+<script>
+    $(document).ready(function () {
+        var x = {{instibranch}};  
+        console.log(x.length);
+        for( var i = 0; i < x.length; i++){
+            console.log(x[i]);
+            $('#' + x[i]).addClass('branch-pack-checked');
+        }
+        $("#save_value").click(function () {
+            var test = new Array();
+            $(".branch-pack-checked input").each(function () {
+                test.push(parseInt($(this).val()));
+            });
+            console.log(test);
+            if (test) {
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    url: 'institute_branch',
+                    data: { id: JSON.stringify(test) },
+                    success: function (data) {
+                        location.reload();
+                        //console.log(data);
+                    }
+                });
+            }
+            else {
+                alert("Something wrong please try after some time !");
+            }
+
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        if({{request.session.defaultinstitute}} == 1){
+            $("#insti_branch_institute").hide();
+            $("#insti_branch_superuser").show();
+        }
+        else{
+            $("#insti_branch_institute").show();
+            $("#insti_branch_superuser").hide();
+        }
+        $(".btn-add").click(function () {
+            $(".data-list").hide();
+            $(".data-filter").hide();
+            $(".data-add").show();
+            $(".header-title").html("Add Stream");
+            $("#pagination").hide();
+
+        });
+
+        $(".btn-close").click(function () {
+
+            $(".data-list").show();
+            $(".data-filter").show();
+            $(".data-add").hide();
+            $(".data-update").hide();
+            $(".header-title").html("");
+
+            $("#pagination").show();
+        });
+
+        $(".edit-column").click(function () {
+            var id = parseInt($(this).attr("id"));
+            var ID = $(this).attr("id");
+            // console.log(id)
+            // console.log(ID)
+            $(".data-list").hide();
+            $(".data-filter").hide();
+            $("#pagination").hide();
+            $(".data-update").show();
+            $(".header-title").html("Edit Branch");
+            if (id) {
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    url: 'list_institute_branch',
+                    data: { id: id },
+                    success: function (data) {
+
+
+                        $(".institute_branch_id").val(data[0]);
+                        console.log(data[0]);
+                        $(".branch_code").val(data[1]);
+                        $(".list_branch").val(data[2]);
+                        $(".status").val(data[3]);
+                    }
+                });
+            }
+            else {
+                alert("Something wrong please try after some time !");
+            }
+        });
+
+        $(".delete-column").click(function () {
+            var id = $(this).attr("id");
+
+            if (confirm("Are you sure ? You want to delete this ?")) {
+                $.ajax({
+                    type: 'POST',
+                    url: 'delete_institutebranch',
+                    data: { id: id },
+                    success: function (html) {
+                        window.location.reload();
+                        // if (html == true) {
+                        //     window.location.reload();
+                        // }
+                        // else {
+                        //     alert("You Cannot delete this Branch, This branch was assigned with courses...");
+                        //     window.location.reload();
+                        // }
+                    }
+                });
+            }
+            else {
+                alert("Something wrong please try after some time !");
+            }
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $(".branch-pack").click(function () {
+            if ($(this).hasClass("branch-pack-checked") == true) {
+                $(this).removeClass("branch-pack-checked");
+            }
+            else {
+                $(this).addClass("branch-pack-checked");
+            }
+        });
+    });
+</script>
+{% endblock %}

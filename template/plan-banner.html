@@ -1,0 +1,405 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="page-inner">
+    <div class="page-title mb-15">
+        <div class="pull-left">
+            <h3 class="breadcrumb-header">Plan Banners</h3>
+            <p class="text-muted mb-0">Plan Banners for Home page</p>
+        </div>
+        <div class="pull-right">
+            <div class="btn-group mx-auto">
+                <ol class="breadcrumb hide-phone pt-4 pb-4 m-0">
+                    <li class="breadcrumb-item"><a href="#">Eduvy</a></li>
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Plan Banners</li>
+                </ol>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel mb-0">
+                    <div class="panel-body">
+                        <h4 class="mt-0 header-title"></h4>
+                        <!--<p class="text-muted mb-30 font-15">Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient monte.</p>-->
+                        <div class="row data-filter" style="padding-top:50px;">
+                            <div class="col-md-1">
+                            </div>
+                            <form method="POST" action="search_planbanner" class="search_planbanner" autocomplete="off">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input type="search" id="searchput" name="search" placeholder="Search..."
+                                            class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <button name="searchbutt" id="searchbut"
+                                            class="btn btn-warning form-control">Search</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <button name="addnew" class="btn btn-success form-control btn-add">Add <b
+                                            class="fa fa-plus"></b></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <br>
+                            <!--Table Section-->
+                            <table class="table table-hover table-striped table-responsive data-list">
+                                <thead>
+                                    <tr>
+                                        
+                                        <th scope="col">Title</th>
+                                        
+                                        <th scope="col">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!--Table Content 1-->
+                                    {% for p in plan %}
+                                    <tr>
+                                       
+                                        <td style="vertical-align: inherit;">{{p.Title}}</td>
+                                        
+                                        <td>
+                                            <span style="cursor:pointer;font-size:1em;" class="fa fa-pencil edit-column"
+                                                id="{{p.id}}">
+                                                </span>
+                                                <span style="cursor:pointer;margin-left:15px;color:red;font-size:1em;"
+                                                    class="fa fa-trash delete-column" id="{{p.id}}">
+                                                </span>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            {% comment %} just copy this nav element fully to other pages and just change the name of the context. Here context is branches {% endcomment %}
+                            {% comment %} Pagination Starts {% endcomment %}
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    {% if plan.paginator.num_pages > 1 %}
+                                    {% if plan.has_previous %}
+                                    <li>
+                                        <a href="?page={{plan.previous_page_number }}">
+                                            << Prev</a>
+                                    </li>
+                                    {% endif %}
+                                    {% for pg in plan.paginator.page_range%}
+                                    {% if posts.number == pg %}
+                                    <li class="active" style="font-weight: 700;"><a href="?page={{ pg }}">{{pg}}</a>
+                                    </li>
+                                    {% else %}
+                                    <li><a href="?page={{ pg }}">{{pg}}</a></li>
+                                    {% endif %}
+                                    {% endfor %}
+                                    {% if plan.has_next %}
+                                    <li>
+                                        <a href="?page={{plan.next_page_number }}">Next >></a>
+                                    </li>
+                                    {% endif %}
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                            {% comment %} Pagination Ends {% endcomment %}
+
+                            <style>
+                                .plan_banner_title {
+                                    position: relative;
+                                    width: 100%;
+                                }
+                                input#plan_banner_title {
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    width: 100%;
+                                    z-index: 10;
+                                }
+                                .validation-message{
+                                    padding:10px;
+                                    font-weight:600;
+                                    color:green;
+                                    display:none;
+                                    position: absolute;
+                                    top: 0;
+                                    right: 0;
+                                    z-index: 11;
+                                }
+                                .fa.fa-check {
+                                    position: relative;
+                                }
+                                .fa.fa-cross {
+                                    position: relative;
+                                }
+                                #plan_title_msg .tooltiptext {
+                                    visibility: hidden;
+                                    width: 120px;
+                                    background-color: black;
+                                    color: #fff;
+                                    text-align: center;
+                                    border-radius: 6px;
+                                    padding: 5px 0;
+                        
+                                    /* Position the tooltip */
+                                    position: absolute;
+                                    z-index: 100;
+                                }
+                                #plan_title_msg i:hover .tooltiptext {
+                                    visibility: visible;
+                                }
+                                #plan_banner_title{
+                                    text-transform:uppercase;
+                                }
+                                #plan_banner_title{
+                                    
+                                    text-transform:capitalize;
+                                }
+                            </style>
+
+                            <!--On click Add Button-->
+                            <div class="row data-add" style="padding-top:50px;display:none">
+                                <form method="post" enctype="multipart/form-data"
+                                    action="planbanner">
+                                    {% csrf_token %}
+                                    <div class="col-lg-12">
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Image</label>
+                                                <input type="file" class="form-control" name="intro_banner_image"
+                                                    required="">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Title</label>
+                                                <div class="plan_banner_title">
+                                                    <input type="text" class="form-control plan_banner_title" name="title" placeholder="Title" id="plan_banner_title"
+                                                        required="">
+                                                    <p class="validation-message" id="plan_title_msg"></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Description</label>
+                                                <input type="text" class="form-control" name="description"
+                                                    placeholder="description" required="">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Status</label>
+                                                <select class="form-control status" name="status">
+                                                    <option value="Active">Active</option>
+                                                    <option value="Inactive">Inactive</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12" style="padding-top:50px;">
+                                        <div class="col-lg-6 text-right"><button class="btn btn-success">Submit</button>
+                                        </div>
+                                        <div class="col-lg-6 text-left"><button type="button"
+                                                class="btn btn-danger btn-close">Close</button></div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="row data-update" style="padding-top:50px;display:none">
+                                <form method="post" enctype="multipart/form-data"
+                                    action="update_planbanner">
+                                    <div class="col-lg-12">
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Image</label>
+                                                <input type="file" class="form-control" name="intro_banner_image">
+                                                <input type="text" style="display:none" hidden=""
+                                                    class="form-control image_path" name="image_path">
+                                                <input type="text" style="display:none" hidden=""
+                                                    class="form-control intro_banner_id" name="id">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Title</label>
+                                                <input type="text" class="form-control intro_banner_title" name="title"
+                                                    placeholder="Title" required="">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Description</label>
+                                                <input type="text" class="form-control description" name="description"
+                                                    placeholder="description" required="">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Status</label>
+                                                <select class="form-control status" name="status">
+                                                    <option value="Active">Active</option>
+                                                    <option value="Inactive">Inactive</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12" style="padding-top:50px;">
+                                        <div class="col-lg-6 text-right"><button class="btn btn-success">Submit</button>
+                                        </div>
+                                        <div class="col-lg-6 text-left"><button type="button"
+                                                class="btn btn-danger btn-close">Close</button></div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-footer">
+        <!--<p>&copy; 2019 Fadmin - Crafted with <i class="mdi mdi-heart text-danger"></i> by ThemesBoss.</p>-->
+    </div>
+</div>
+
+</script>
+<script>
+    $(document).ready(function () {
+
+        $(".btn-add").click(function () {
+
+            $(".data-list").hide();
+            $(".data-filter").hide();
+            $(".data-add").show();
+            $(".header-title").html("Add Plan Banner");
+        });
+
+        $(".btn-close").click(function () {
+
+            $(".data-list").show();
+            $(".data-filter").show();
+            $(".data-add").hide();
+            $(".data-update").hide();
+            $(".header-title").html("");
+        });
+
+        $(".edit-column").click(function () {
+            var id = $(this).attr("id");
+            $(".data-list").hide();
+            $(".data-filter").hide();
+            $(".data-update").show();
+            $(".header-title").html("Edit Plan Banner");
+            console.log("click");
+            if (id) {
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    url: 'list_planbanner',
+                    data: { id: id },
+                    success: function (html) {
+
+                        $(".intro_banner_id").val(html[0]);
+                        $(".intro_banner_title").val(html[2]);
+                        $(".description").val(html[3]);
+                        $(".image_path").val(html[1]);
+                        $(".status").val(html[4]);
+                    }
+                });
+            }
+            else {
+                alert("Something wrong please try after some time !");
+            }
+        });
+
+        $(".delete-column").click(function () {
+            var id = $(this).attr("id");
+
+            if (confirm("Are you sure ? You want to delete this ?")) {
+                $.ajax({
+                    type: 'POST',
+                    url: 'delete_planbanner',
+                    data: { id: id },
+                    success: function (html) {
+                        window.location.reload();
+                    }
+                });
+            }
+            else {
+                alert("Something wrong please try after some time !");
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $(".search_planbanner").submit(function(event) {
+            var formData = {
+                search: $("#searchput").val(),
+
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "search_planbanner",
+                data: formData,
+                dataType: "json",
+                encode: true,
+            }).done(function(data) {
+                console.log(data.length);
+                $("tbody tr").remove();
+                for (i = 0; i < data.length; i++) {
+                    $('tbody').append("<tr><td>" + data[i]['Title'] + "</td><td><span style='cursor:pointer;font-size:1em;' class='fa fa-pencil edit-column' id='" + data[i]['id'] + "'></span><span style='cursor:pointer;margin-left:15px;color:red;font-size:1em;' class='fa fa-trash delete-column' id='" + data[i]['id'] + "'></span></td></tr>");
+                }
+
+
+            });
+
+            event.preventDefault();
+        });
+    });
+    $(document).ready(function() {
+        $('#multiple-checkboxes').multiselect({
+            includeSelectAllOption: true,
+            enableCaseInsensitiveFiltering: true,
+        });
+    })
+</script>
+<script>
+    $('#plan_banner_title').change(function(){
+        var plan = $('#plan_banner_title').val();  
+        if(plan){
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: 'is_plan_banner',
+                data: { plan: plan }, 
+                success: function (data) {
+                    if(data == 0){
+                        $('#plan_title_msg').css("color",'green');
+                        $('#plan_title_msg i').remove();
+                        $('#plan_title_msg i span').remove();
+                        $('#plan_title_msg').append('<i class="fa fa-check"></i>');
+                        $('#plan_title_msg i').append('<span class="tooltiptext">Title Available</span>');
+                        $('#plan_title_msg').show();
+                    }
+                    else{                        
+                        $('#plan_title_msg').css("color",'red');
+                        $('#plan_title_msg i').remove();
+                        $('#plan_title_msg i span').remove();
+                        $('#plan_title_msg').append('<i class="fa fa-times"></i>');
+                        $('#plan_title_msg i').append('<span class="tooltiptext">Title Not Available</span>');
+                        $('#plan_title_msg').show();
+                    }
+                }
+            });
+        }
+        else{
+            $('#plan_title_msg').hide();
+        }
+    });
+</script>
+{% endblock %}

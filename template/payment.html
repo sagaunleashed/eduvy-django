@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-inner">
+               <div class="page-title mb-15">
+                  <div class="pull-left">
+                     <h3 class="breadcrumb-header">New Payment</h3>
+                     <p class="text-muted mb-0">New Payment for student fee payment portal</p>
+                  </div>
+                  <div class="pull-right">
+                     <div class="btn-group mx-auto">
+                        <ol class="breadcrumb hide-phone pt-4 pb-4 m-0">
+                           <li class="breadcrumb-item"><a href="#">Eduvy</a></li>
+                           <li class="breadcrumb-item"><a href="#">Account</a></li>
+                           <li class="breadcrumb-item active">New Payment</li>
+                        </ol>
+                     </div>
+                  </div>
+                  <div class="clearfix"></div>
+               </div>
+               <div id="main-wrapper">
+                  <div class="row">
+                     <div class="col-lg-12">
+                        <div class="panel mb-0">
+                           <div class="panel-body">
+                              <!--<p class="text-muted mb-30 font-15">Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient monte.</p>-->
+                              <div class="row data-filter" style="padding-top:50px;">
+                                    <div class="col-md-3">
+                                       <div class="form-group">
+									   <label>Student Id</label>
+                                          <input type="search" name="search" placeholder="Enter your student Id" class="form-control user_student_id">
+                                       </div>
+                                    </div>
+									<div class="col-md-1" style="padding:30px;">
+									<label>( OR )</label>
+                                    </div>
+									<div class="col-md-3">
+                                       <div class="form-group">
+									   <label>Date of birth</label>
+                                          <input type="date" name="dob" placeholder="" class="form-control user_dob">
+                                       </div>
+                                    </div>
+									<div class="col-md-3">
+                                       <div class="form-group">
+									   <label>Phone number</label>
+                                          <input type="number" name="phone" placeholder="Enter your phone" class="form-control user_phone">
+                                       </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                       <div class="form-group">
+                                          <button name="searchbutt" style="margin-top:25px;" class="btn btn-warning form-control search_student">Search</button>
+                                       </div>
+                                    </div>
+                              </div>
+                              <div>
+                                 <br>
+                                 <!--Table Section-->
+                                 <!--<table class="table table-hover table-striped table-responsive data-list">
+                                    <thead>
+                                       <tr>
+                                          <th scope="col">Images</th>
+                                          <th scope="col">Title</th>
+                                          <th scope="col">description</th>
+                                          <th scope="col">Status</th>
+                                          <th scope="col">Actions</th>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+									                                       </tbody>
+                                 </table>-->
+                                 <!--On click Add Button-->
+                                 <div class="row data-add" style="padding-top:50px;display:none">
+                                    <form method="post" enctype="multipart/form-data" action="http://eduvyerp.co.in/eduvy/admin/account/add_payment">
+                                       <div class="col-lg-12">
+                                          <div class="col-lg-3">
+                                             <div class="form-group">
+                                                <label>Amount</label>
+                                                <input type="number" class="form-control fee_amount" disabled="">
+												<input type="text" style="display:none" class="form-control uniq_student_id" name="student_id">
+												<input type="number" style="display:none" class="form-control student_fee_id" name="student_fee_id">
+                                             </div>
+                                          </div>
+                                          <div class="col-lg-3">
+                                             <div class="form-group">
+                                                <label>Paying Amount</label>
+                                                <input type="number" class="form-control" name="amount" placeholder="Amount" required="">
+                                             </div>
+                                          </div>
+										  <div class="col-lg-3">
+                                             <div class="form-group">
+                                                <label>Payment Mode</label>
+                                                <select class="form-control payment_mode" name="payment_mode" required="">
+												<option value="Online">Online</option>
+												<option value="Cash">Bank Transfer</option>
+												</select>
+                                             </div>
+                                          </div>
+                                          <div class="col-lg-3">
+                                             <div class="form-group">
+                                                <label>Date</label>
+                                                <input type="date" class="form-control" value="2021-06-04" name="date" placeholder="date" required="">
+                                             </div>
+                                          </div>
+										  <div class="col-lg-3">
+                                             <div class="form-group">
+                                                <label>Transaction Id (optional)</label>
+                                                <input type="text" class="form-control" name="transaction_id" placeholder="Transaction Id">
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="col-lg-12" style="padding-top:50px;">
+                                          <div class="col-lg-6 text-right"><button class="btn btn-success">Submit</button></div>
+                                          <div class="col-lg-6 text-left"><button type="button" class="btn btn-danger btn-close">Close</button></div>
+                                       </div>
+                                    </form>
+                                 </div>
+								 <div class="row student-view" style="display:none;">
+                     <div class="col-lg-12">
+                        <div class="panel mb-0">
+                           <div class="panel-body">
+						   <h4 class="mt-0 header-title">Student Details</h4>
+						        <table class="table table-responsive table-bordered">
+						         <tbody><tr>
+								 <th colspan="2">Student Id</th>
+								 <td colspan="2" class="student_id"></td>
+								 </tr>
+								 <tr>
+								 <th>Student Name</th>
+								 <td class="student_name">
+								 </td><th>Course</th>
+								 <td class="course_name">
+								 </td>
+								 </tr>
+								 <tr>
+								 <th>Batch</th>
+								 <td class="batch_year">
+								 </td><th>Section</th>
+								 <td class="batch_section">
+								 </td>
+								 </tr>
+								 <tr>
+								 <th>Email</th>
+								 <td class="student_email"></td>
+								 <th>Phone</th>
+								 <td class="student_phone"></td>
+								 </tr>
+								</tbody></table>
+							<div class="fee_payments"></div>
+							
+							
+						   </div>
+						   </div>
+						   </div>
+						   </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="page-footer">
+                  <!--<p>&copy; 2019 Fadmin - Crafted with <i class="mdi mdi-heart text-danger"></i> by ThemesBoss.</p>-->
+               </div>
+            </div>
+{% endblock  %}
